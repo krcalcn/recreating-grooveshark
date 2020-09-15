@@ -6,25 +6,23 @@ const List = require('./list');
 const Song = require('./song');
 
 class User {
-  constructor (name, userName, email, password) {
-    this.id = uid()
-    this.name = name
-    this.userName = userName
-    this.email = email
-    this.password = password
-    this.queue = []
-    this.createdAt = moment().format()
-    this.deletedAt = ''
-    this.Saved = new Saved(this.id)
-    this.Favorites = new Favorites(this.id)
+  constructor(name, userName, email, password) {
+    this.id = uid();
+    this.name = name;
+    this.userName = userName;
+    this.email = email;
+    this.password = password;
+    this.queue = [];
+    this.createdAt = moment().format();
+    this.deletedAt = '';
+    this.Saved = new Saved(this.id);
+    this.Favorites = new Favorites(this.id);
   }
-  createPlaylist (name, isPublic) {
-    const createdList = new List(this.id, name, isPublic)
-    return createdList
-  }
-  deletePlaylist (list) {
-    //
+
+  createPlaylist(name, isPublic) {
+    const createdList = new List(this.id, name, isPublic);
+    return createdList;
   }
 }
 
-module.exports = User
+module.exports = User;
