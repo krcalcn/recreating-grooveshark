@@ -3,7 +3,7 @@ const moment = require('moment');
 
 class List {
   constructor(ownerId, name, isPublic) {
-    this.id = uid(32);
+    this.id = uid();
     this.ownerId = ownerId;
     this.name = name;
     this.songs = [];

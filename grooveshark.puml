@@ -23,6 +23,7 @@ class User <<Entity>>{
   + joinBroadcast()
   + addSong()
   + followUser()
+  + freezeUserAccount()
 }
 
 class Follow <<Entity>> {
@@ -75,6 +76,7 @@ class Song <<Entity>>{
   + genres: Array
   + recordCompany: String
   + artists: Array
+  + whoAdded: String
   + createdAt: Date
   + deletedAt: Date
 }
@@ -108,13 +110,13 @@ class Favorites <<Entity>>{
   + listsId: Array
 }
 
-Artist *-- Album
-Artist *-- Song
-User *-- List
-User *-- Saved
-User *-- Favorites
-User *-- Broadcast
+Artist "1" *--> "0..*" Album
+Artist "1" *--> "1..*" Song
+User "1" *--> "0..*" List
+User "1" *--> "1" Saved
+User "1" *--> "1" Favorites
+User "1" *--> "0..*" Broadcast
 
-Album o-- Song
+Album o--> Song
 
 @enduml

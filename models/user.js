@@ -23,6 +23,23 @@ class User {
     const createdList = new List(this.id, name, isPublic);
     return createdList;
   }
+
+  addSong(name, duration, url, releaseDate, genres, recordCompany = '', artists = []) {
+    const newSong = new Song(name, duration, url,
+      releaseDate, genres, this.id, recordCompany, artists);
+    this.saveSong(newSong.name); // FIXME: will be newSong.id
+  }
+
+  saveSong(...args) {
+    for (let i = 0; i < arguments.length; i += 1) {
+      this.Saved.songs.push(args[i]);
+    }
+    return this.Saved.songs;
+  }
+
+  savePlaylist(list) {
+    return this.Saved.listId.push(list);
+  }
 }
 
 module.exports = User;

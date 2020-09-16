@@ -13,6 +13,7 @@ class Broadcast {
     this.createdAt = moment().format();
     this.deletedAt = '';
   }
+  // TODO: Every users can only have 1 broadcast active at a time
 }
 
 module.exports = Broadcast;
