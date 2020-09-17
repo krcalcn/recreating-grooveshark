@@ -1,7 +1,5 @@
 const uid = require('uid');
 const moment = require('moment');
-const Saved = require('./saved');
-const Favorites = require('./favorites');
 const List = require('./list');
 const Song = require('./song');
 
@@ -13,10 +11,12 @@ class User {
     this.email = email;
     this.password = password;
     this.queue = [];
+    this.savedSongs = [];
+    this.savedLists = [];
+    this.favSongs = [];
+    this.favLists = [];
     this.createdAt = moment().format();
     this.deletedAt = '';
-    this.Saved = new Saved(this.id);
-    this.Favorites = new Favorites(this.id);
   }
 
   createPlaylist(name, isPublic) {
@@ -28,17 +28,18 @@ class User {
     const newSong = new Song(name, duration, url,
       releaseDate, genres, this.id, recordCompany, artists);
     this.saveSong(newSong.name); // FIXME: will be newSong.id
+    return newSong;
   }
 
   saveSong(...args) {
     for (let i = 0; i < arguments.length; i += 1) {
-      this.Saved.songs.push(args[i]);
+      this.savedSongs.push(args[i]);
     }
-    return this.Saved.songs;
+    return this.savedSongs;
   }
 
   savePlaylist(list) {
-    return this.Saved.listId.push(list);
+    return this.savedLists.push(list);
   }
 }
 

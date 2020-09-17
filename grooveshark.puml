@@ -8,6 +8,10 @@ class User <<Entity>>{
   + email: String
   + password: String
   + queue: Array
+  + savedSongs: Array
+  + savedLists: Array
+  + favSongs: Array
+  + favLists: Array
   + createdAt: Date
   + deletedAt: Date
 
@@ -98,23 +102,10 @@ class Genre <<ValueObject>>{
   + name: String
 }
 
-class Saved <<Entity>>{
-  + userId: String
-  + songs: Array
-  + listsId: Array
-}
-
-class Favorites <<Entity>>{
-  + userId: String
-  + songs: Array
-  + listsId: Array
-}
 
 Artist "1" *--> "0..*" Album
 Artist "1" *--> "1..*" Song
 User "1" *--> "0..*" List
-User "1" *--> "1" Saved
-User "1" *--> "1" Favorites
 User "1" *--> "0..*" Broadcast
 
 Album o--> Song
