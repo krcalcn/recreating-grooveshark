@@ -17,8 +17,7 @@
   },
   "homepage": "https://github.com/krcalcn/recreating-grooveshark#readme",
   "dependencies": {
-    "moment": "^2.28.0",
-    "uid": "^1.0.0"
+    "uuid": "^8.3.0"
   },
   "devDependencies": {
     "eslint": "^7.9.0",

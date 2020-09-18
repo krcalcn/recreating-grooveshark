@@ -1,17 +1,16 @@
-const uid = require('uid');
-const moment = require('moment');
+const uuid = require('uuid');
 
 class List {
   constructor(ownerId, name, isPublic) {
-    this.id = uid();
+    this.id = uuid.v4();
     this.ownerId = ownerId;
     this.name = name;
     this.songs = [];
     this.isPublic = isPublic;
     this.whoCanSee = [];
     this.whoCanAdd = [];
-    this.createdAt = moment().format();
-    this.deletedAt = '';
+    this.createdAt = new Date();
+    this.deletedAt = null;
   }
 
   addToList(...args) {
@@ -19,6 +18,10 @@ class List {
       this.songs.push(args[i]);
     }
     return this.songs;
+  }
+
+  deleteList() {
+    this.deletedAt = new Date();
   }
 }
 

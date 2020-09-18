@@ -1,4 +1,3 @@
-const moment = require('moment');
 const Album = require('./models/album');
 const Artist = require('./models/artist');
 const Broadcast = require('./models/broadcast');
@@ -9,33 +8,65 @@ const User = require('./models/user');
 const Follow = require('./models/follow');
 
 console.log('-------------------------------------------------------------------------------------------------------------------------------------------');
-const momnt = moment().format();
 
-const usr = new User('ali', 'krcalcn', 'test@test.com', '1234');
+const user = new User('ali', 'krcalcn', 'test@test.com', '1234');
+const user2 = new User('can', 'kullaniciAdi', 'dummy@dummy.com', '1234');
+const eloy = new Artist('Eloy');
+const kingCrimson = new Artist('King Crimson');
+const pitbull = new Artist('Pitbull');
+const rock = new Genre('rock');
+const progressiveRock = new Genre('progressive rock');
 
-const fSong = usr.addSong('Poseidon`s Creation', '6:42', './sarki1.mp3', momnt, ['rock', 'alternative']);
-usr.addSong('In the Wake of Poseidon', '5:42', './sarki2.mp3', momnt, ['rock', 'alternative']);
-usr.addSong('Old and Wise', '4:57', './sarki3.mp3', momnt, ['rock', 'alternative']);
-console.log(fSong);
-const newList = usr.createPlaylist('Yeni Calma Listem', true);
+const follow1 = new Follow(user.id, user2.id);
+const follow2 = new Follow(user2.id, user.id);
 
-newList.addToList(...usr.savedSongs.map((i) => i));
-// console.log(usr, newList, newList.songs);
-console.log(`${usr.name} kullanicisi ${newList.name} listesini olusturdu ve ${newList.songs} sarkilarini ekledi`);
+const song1 = new Song(
+  'Poseidon`s Creation', // name
+  402, // duration
+  './sarki1.mp3', // url
+  new Date(), // releaseDate
+  user.id, // creatorUserId
+  [eloy.id, pitbull.id], // artists
+  [rock.id, progressiveRock.id], // genres
+);
 
-/*
-  TODO:
-    - Function addSongToFavs()
-    - Function addPlaylistToFavs()
-    - Function addToQueue()
-    - Function startBroadcast()
-    - Function joinBroadCast()
-    - Function followUser()
-    - Function freezeUserAccount()
-    - Database
-    - Function removeFromQueue()
-    - Function deletePlaylist()
-    - File Uploading
-    - Audio Streaming
+const song2 = new Song(
+  'In the Wake of Poseidon',
+  320,
+  './sarki2.mp3',
+  new Date(),
+  user.id,
+  [kingCrimson.id, pitbull.id],
+  [rock.id, progressiveRock.id],
+);
 
+const ocean = new Album('Ocean', [song1.id], new Date());
+const inTheWakeOfPoseidon = new Album('In the Wake of Poseidon', [song2.id], new Date());
+
+const addedSongs = user.addSong(song1.id, song2.id);
+const favSongs = user.favoriteSongs(song1.id, song2.id);
+const newList = new List(user.id, 'Yeni Calma Listem', true);
+user.savePlaylist(newList.id);
+user.favoritePlaylist(newList.id);
+
+newList.addToList(user.savedSongs.map((i) => i));
+
+const broadcast = new Broadcast(user.id, 'Prog Rock Yayını', false, true, [song1.id, song2.id]);
+user.startBroadcasting(broadcast);
+
+console.log(`${user.name} kullanicisi ${newList.name} listesini olusturdu ve ${newList.songs} sarkilarini ekledi`);
+
+console.log(`User: ${JSON.stringify(user, null, 2)}`);
+console.log(`Follow: ${JSON.stringify(follow1, null, 2)}`);
+console.log(`Broadcast: ${JSON.stringify(broadcast, null, 2)}`);
+
+/**
+ * TODO:
+ * - Function freezeUserAccount()
+ * - Database
+ * - Function removeFromQueue()
+ * - Function deletePlaylist()
+ * - File Uploading
+ * - Audio Streaming
+ * - Broadcast Sync Streaming
 */

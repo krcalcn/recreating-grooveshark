@@ -1,16 +1,19 @@
-const uid = require('uid');
-const moment = require('moment');
+const uuid = require('uuid');
 
 class Album {
   constructor(name, songs, releaseDate, genres, recordCompany = '') {
-    this.id = uid();
+    this.id = uuid.v4();
     this.name = name;
     this.songs = songs;
     this.releaseDate = releaseDate;
     this.genres = genres;
     this.recordCompany = recordCompany;
-    this.createdAt = moment().format();
-    this.deletedAt = '';
+    this.createdAt = new Date();
+    this.deletedAt = null;
+  }
+
+  deleteAlbum() {
+    this.deletedAt = new Date();
   }
 }
 

@@ -1,8 +1,8 @@
-const uid = require('uid');
+const uuid = require('uuid');
 
 class Genre {
   constructor(name) {
-    this.id = uid();
+    this.id = uuid.v4();
     this.name = name;
   }
 }

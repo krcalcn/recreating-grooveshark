@@ -1,19 +1,29 @@
-const uid = require('uid');
-const moment = require('moment');
+const uuid = require('uuid');
 
 class Broadcast {
-  constructor(streamerId, name, queue, isPublic, whoCanJoin) {
-    this.id = uid();
-    this.streamerId = streamerId;
+  constructor(
+    userId,
+    name,
+    isActive,
+    isPublic,
+    queue = [],
+    whoCanJoin = [],
+  ) {
+    this.id = uuid.v4();
+    this.streamerId = userId;
     this.name = name;
     this.queue = queue;
-    this.isActive = true;
+    this.isActive = isActive;
     this.isPublic = isPublic;
     this.whoCanJoin = whoCanJoin;
-    this.createdAt = moment().format();
-    this.deletedAt = '';
+    this.createdAt = new Date();
+    this.deletedAt = null;
   }
-  // TODO: Every users can only have 1 broadcast active at a time
+  /** TODO:
+   *    - addToQueue()
+   *    - removeFromQueue()
+   *
+   * */
 }
 
 module.exports = Broadcast;

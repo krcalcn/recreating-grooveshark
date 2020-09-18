@@ -1,13 +1,21 @@
-const uid = require('uid');
-const moment = require('moment');
+const uuid = require('uuid');
 
 class Follow {
   constructor(follower, following) {
-    this.id = uid();
+    this.id = uuid.v4();
     this.follower = follower;
     this.following = following;
-    this.createdAt = moment().format();
-    this.deletedAt = '';
+    this.createdAt = new Date();
+    this.deletedAt = null;
+  }
+
+  followUser(follower, following) {
+    this.follower = follower;
+    this.following = following;
+  }
+
+  deleteFollow() {
+    this.deletedAt = new Date();
   }
 }
 

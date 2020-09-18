@@ -1,15 +1,14 @@
-const uid = require('uid');
-const moment = require('moment');
+const uuid = require('uuid');
 
 class Artist {
   constructor(name, genres) {
-    this.id = uid();
+    this.id = uuid.v4();
     this.name = name;
     this.albums = [];
     this.singles = [];
     this.genres = [];
-    this.createdAt = moment().format();
-    this.deletedAt = '';
+    this.createdAt = new Date();
+    this.deletedAt = null;
   }
 }
 
