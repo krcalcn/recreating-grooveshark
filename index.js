@@ -5,7 +5,14 @@ const Genre = require('./models/genre');
 const List = require('./models/list');
 const Song = require('./models/song');
 const User = require('./models/user');
-const Follow = require('./models/follow');
+// const albumDatabase = require('./database/album-database');
+// const artistDatabase = require('./database/artist-database');
+// const broadcastDatabase = require('./database/broadcast-database');
+// const genreDatabase = require('./database/genre-database');
+// const listDatabase = require('./database/list-database');
+// const songDatabase = require('./database/song-database');
+// const userDatabase = require('./database/user-database');
+const database = require('./database');
 
 console.log('-------------------------------------------------------------------------------------------------------------------------------------------');
 
@@ -17,8 +24,7 @@ const pitbull = new Artist('Pitbull');
 const rock = new Genre('rock');
 const progressiveRock = new Genre('progressive rock');
 
-const follow1 = new Follow(user.id, user2.id);
-const follow2 = new Follow(user2.id, user.id);
+user2.followUser(user);
 
 const song1 = new Song(
   'Poseidon`s Creation', // name
@@ -29,7 +35,6 @@ const song1 = new Song(
   [eloy.id, pitbull.id], // artists
   [rock.id, progressiveRock.id], // genres
 );
-
 const song2 = new Song(
   'In the Wake of Poseidon',
   320,
@@ -39,27 +44,29 @@ const song2 = new Song(
   [kingCrimson.id, pitbull.id],
   [rock.id, progressiveRock.id],
 );
+console.log(database);
+database.songDatabase.save([song1, song2]);
 
 const ocean = new Album('Ocean', [song1.id], new Date());
 const inTheWakeOfPoseidon = new Album('In the Wake of Poseidon', [song2.id], new Date());
 
-const addedSongs = user.addSong(song1.id, song2.id);
-const favSongs = user.favoriteSongs(song1.id, song2.id);
-const newList = new List(user.id, 'Yeni Calma Listem', true);
-user.savePlaylist(newList.id);
-user.favoritePlaylist(newList.id);
+const addedSongs = user.addSong(song1.id);
+const favSongs = user.addToFavoriteSongs([song1.id, song2.id]);
+const newList = user.createList(user.id, 'Yeni Calma Listem', true);
+const newList2 = user.createList(user.id, 'Yeni Calma Listem2', true);
+user.saveList(newList.id);
+user.addToFavoriteLists(newList.id);
+database.listDatabase.save([newList]);
 
-newList.addToList(user.savedSongs.map((i) => i));
+user.addToList(newList.id, user.savedSongs.map((i) => i));
+// user.createBroadcast(user.id, 'Prog Rock Yayını', false, true, [song1.id, song2.id]);
 
-const broadcast = new Broadcast(user.id, 'Prog Rock Yayını', false, true, [song1.id, song2.id]);
-user.startBroadcasting(broadcast);
+database.userDatabase.save([user, user2]);
+const foundById = database.listDatabase.findById(newList.id);
+database.listDatabase.save(foundById);
 
-console.log(`${user.name} kullanicisi ${newList.name} listesini olusturdu ve ${newList.songs} sarkilarini ekledi`);
-
-console.log(`User: ${JSON.stringify(user, null, 2)}`);
-console.log(`Follow: ${JSON.stringify(follow1, null, 2)}`);
-console.log(`Broadcast: ${JSON.stringify(broadcast, null, 2)}`);
-
+// console.log(newList);
+// console.log(foundById);
 /**
  * TODO:
  * - Function freezeUserAccount()

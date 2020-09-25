@@ -1,7 +1,7 @@
 @startuml grooveshark
 
 
-class User <<Entity>>{
+class User <<Entity>> {
   + id: String
   + name: String
   + userName: String
@@ -36,7 +36,7 @@ class Follow <<Entity>> {
   + following: String
 }
 
-class List <<Entity>>{
+class List <<Entity>> {
   + id: String
   + ownerId: Number
   + name: String
@@ -50,7 +50,7 @@ class List <<Entity>>{
   + addToList()
 }
 
-class Artist <<Entity>>{
+class Artist <<Entity>> {
   + id: String
   + name: String
   + albums: Array
@@ -60,7 +60,7 @@ class Artist <<Entity>>{
   + deletedAt: Date
 }
 
-class Album <<Entity>>{
+class Album <<Entity>> {
   + id: String
   + name: String
   + songs: Array
@@ -71,7 +71,7 @@ class Album <<Entity>>{
   + deletedAt: Date
 }
 
-class Song <<Entity>>{
+class Song <<Entity>> {
   + id: String
   + name: String
   + duration: Time
@@ -85,7 +85,7 @@ class Song <<Entity>>{
   + deletedAt: Date
 }
 
-class Broadcast <<Entity>>{
+class Broadcast <<Entity>> {
   + id: String
   + streamerId: String
   + name: String
@@ -93,11 +93,14 @@ class Broadcast <<Entity>>{
   + isActive: Boolean
   + isPublic: Boolean
   + whoCanJoin: Array
+  + chat: String
   + createdAt: Date
   + deletedAt: Date
 }
 
-class Genre <<ValueObject>>{
+
+
+class Genre <<ValueObject>> {
   + id: Integer
   + name: String
 }

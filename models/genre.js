@@ -1,9 +1,13 @@
 const uuid = require('uuid');
 
 class Genre {
-  constructor(name) {
-    this.id = uuid.v4();
+  constructor(name, id = uuid.v4()) {
     this.name = name;
+    this.id = id;
+  }
+
+  static create({ name, id }) {
+    return new Genre(name, id);
   }
 }
 

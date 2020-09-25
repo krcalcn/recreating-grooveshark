@@ -1,27 +1,32 @@
 const uuid = require('uuid');
 
 class List {
-  constructor(ownerId, name, isPublic) {
-    this.id = uuid.v4();
+  constructor(
+    ownerId,
+    name,
+    isPublic,
+    id = uuid.v4(),
+    songs = [],
+    whoCanSee = [],
+    whoCanAdd = [],
+    createdAt = new Date(),
+    deletedAt = null,
+  ) {
     this.ownerId = ownerId;
     this.name = name;
-    this.songs = [];
     this.isPublic = isPublic;
-    this.whoCanSee = [];
-    this.whoCanAdd = [];
-    this.createdAt = new Date();
-    this.deletedAt = null;
+    this.id = id;
+    this.songs = songs;
+    this.whoCanSee = whoCanSee;
+    this.whoCanAdd = whoCanAdd;
+    this.createdAt = createdAt;
+    this.deletedAt = deletedAt;
   }
 
-  addToList(...args) {
-    for (let i = 0; i < arguments.length; i += 1) {
-      this.songs.push(args[i]);
-    }
-    return this.songs;
-  }
-
-  deleteList() {
-    this.deletedAt = new Date();
+  static create({
+    ownerId, name, isPublic, id, songs, whoCanSee, whoCanAdd, createdAt, deletedAt,
+  }) {
+    return new List(ownerId, name, isPublic, id, songs, whoCanSee, whoCanAdd, createdAt, deletedAt);
   }
 }
 

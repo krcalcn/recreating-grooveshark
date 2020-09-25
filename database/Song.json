@@ -1,0 +1,42 @@
+[[
+  "1",
+  "2"
+],{
+  "name": "3",
+  "duration": 402,
+  "url": "4",
+  "releaseDate": "5",
+  "creatorUserId": "6",
+  "id": "7",
+  "artists": "8",
+  "genres": "9",
+  "recordCompany": null,
+  "listener": 0,
+  "createdAt": "5",
+  "deletedAt": null
+},{
+  "name": "10",
+  "duration": 320,
+  "url": "11",
+  "releaseDate": "5",
+  "creatorUserId": "6",
+  "id": "12",
+  "artists": "13",
+  "genres": "14",
+  "recordCompany": null,
+  "listener": 0,
+  "createdAt": "5",
+  "deletedAt": null
+},"Poseidon`s Creation","./sarki1.mp3","2020-09-25T09:27:43.580Z","f536f984-17e9-45a7-96ff-858569c921e5",[
+  "15",
+  "16"
+],[
+  "17",
+  "18"
+],[],"In the Wake of Poseidon","./sarki2.mp3",[
+  "19",
+  "16"
+],[
+  "17",
+  "18"
+],[],"f8a3edd5-ec9b-4de5-8eca-af05402f6153","3b316fdd-f6bc-4685-aa4c-cccca5a4ac95","5753b2b9-755b-4cb6-8124-2aa4548bd5b1","fef28474-d154-4d01-b5a5-53c77dca3b20","c9e5a8fd-2a1d-4fcf-8285-48cf827345be"]

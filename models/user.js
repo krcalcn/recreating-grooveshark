@@ -1,68 +1,185 @@
 const uuid = require('uuid');
+const Broadcast = require('./broadcast');
+const List = require('./list');
+const listDatabase = require('../database/list-database');
+// const userDatabase = require('../database/user-database'); // Fails (imports itself)
+// const { listDatabase } = require('../database'); // Also Fails
 
 class User {
-  constructor(name, userName, email, password) {
-    this.id = uuid.v4();
+  constructor(name, userName, email, password, id = uuid.v4(),
+    queue = [],
+    ownedLists = [],
+    addedSongs = [],
+    savedSongs = [],
+    savedLists = [],
+    favoriteSongs = [],
+    favoriteLists = [],
+    followers = [],
+    following = [],
+    broadcast = null,
+    attendedBroadcast = null,
+    createdAt = new Date(),
+    deletedAt = null) {
     this.name = name;
     this.userName = userName;
     this.email = email;
     this.password = password;
-    this.queue = [];
-    this.savedSongs = [];
-    this.savedLists = [];
-    this.favSongs = [];
-    this.favLists = [];
-    this.broadcast = null;
-    this.attendedBroadcast = null;
-    this.createdAt = new Date();
-    this.deletedAt = null;
+    this.id = id;
+    this.queue = queue;
+    this.ownedLists = ownedLists;
+    this.addedSongs = addedSongs;
+    this.savedSongs = savedSongs;
+    this.savedLists = savedLists;
+    this.favoriteSongs = favoriteSongs;
+    this.favoriteLists = favoriteLists;
+    this.followers = followers;
+    this.following = following;
+    this.broadcast = broadcast;
+    this.attendedBroadcast = attendedBroadcast;
+    this.createdAt = createdAt;
+    this.deletedAt = deletedAt;
   }
 
-  addSong(...args) {
+  createList(ownerId, name, isPublic) {
+    const newList = new List(ownerId, name, isPublic);
+    this.ownedLists.push(newList.id);
+    this.savedLists.push(newList.id);
+    listDatabase.save([newList]);
+    // userDatabase.save([this]); // Fails
+    return newList;
+  }
+
+  addToList(listId, songs) {
+    songs.forEach((e) => {
+      const list = listDatabase.findById(listId);
+      if (list.ownerId === this.id) {
+        list.songs.push(e);
+      }
+      listDatabase.update(list);
+    });
+  }
+
+  deleteList(listId) {
+    this.deletedAt = new Date();
+  }
+
+  addSong(songs) {
     // TODO: get song file
-    for (let i = 0; i < arguments.length; i += 1) {
-      this.saveSongs(args[i]);
+
+    if (Array.isArray(songs)) {
+      songs.forEach((e) => {
+        this.saveSongs([e]);
+        this.addedSongs.push(e);
+      });
+    } else {
+      this.saveSongs(songs);
+      this.addedSongs.push(songs);
     }
   }
 
-  saveSongs(...args) {
-    for (let i = 0; i < arguments.length; i += 1) {
-      this.savedSongs.push(args[i]);
+  deletesong(songId) {
+    // select song by id if owner id equals this.id delete
+    return this.addedSongs;
+  }
+
+  saveSongs(songs) {
+    if (Array.isArray(songs)) {
+      songs.forEach((e) => {
+        this.savedSongs.push(e);
+      });
+      return this.savedSongs;
     }
+    this.savedSongs.push(songs);
     return this.savedSongs;
   }
 
-  favoriteSongs(...args) {
-    for (let i = 0; i < arguments.length; i += 1) {
-      this.favSongs.push(args[i]);
+  addToFavoriteSongs(songs) {
+    if (Array.isArray(songs)) {
+      songs.forEach((element) => {
+        this.favoriteSongs.push(element);
+      });
+    } else {
+      this.favoriteSongs.push(songs);
     }
-    return this.savedSongs;
   }
 
-  savePlaylist(list) {
+  saveList(list) {
     return this.savedLists.push(list);
   }
 
-  favoritePlaylist(list) {
-    return this.favLists.push(list);
+  addToFavoriteLists(list) {
+    return this.favoriteLists.push(list);
   }
 
   addToQueue(song) {
     return this.queue.push(song);
   }
 
+  createBroadcast(userId, name, isActive, isPublic, queue) {
+    const bc = new Broadcast(userId, name, isActive, isPublic, queue);
+    this.broadcast = bc;
+    this.startBroadcasting(bc);
+  }
+
   startBroadcasting(broadcast) {
     broadcast.isActive = true;
-    this.broadcast = broadcast.id;
-    this.attendedBroadcast = broadcast.id;
+    this.broadcast = broadcast;
+    this.attendedBroadcast = broadcast;
   }
 
   joinBroadCast(broadcast) {
     this.attendedBroadcast = broadcast.id;
   }
 
-  deleteUser() {
+  followUser(following) {
+    this.following.push(following.id);
+    following.followers.push(this.id);
+  }
+
+  freezeUser() {
     this.deletedAt = new Date();
+  }
+
+  static create({
+    name,
+    userName,
+    email,
+    password,
+    id,
+    queue,
+    ownedLists,
+    addedSongs,
+    savedSongs,
+    savedLists,
+    favoriteSongs,
+    favoriteLists,
+    followers,
+    following,
+    broadcast,
+    attendedBroadcast,
+    createdAt,
+    deletedAt,
+  }) {
+    return new User(
+      name,
+      userName,
+      email,
+      password,
+      id,
+      queue,
+      ownedLists,
+      addedSongs,
+      savedSongs,
+      savedLists,
+      favoriteSongs,
+      favoriteLists,
+      followers,
+      following,
+      broadcast,
+      attendedBroadcast,
+      createdAt,
+      deletedAt,
+    );
   }
 }
 
