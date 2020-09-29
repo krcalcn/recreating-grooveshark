@@ -2,11 +2,11 @@ const uuid = require('uuid');
 const Broadcast = require('./broadcast');
 const List = require('./list');
 const listDatabase = require('../database/list-database');
-// const userDatabase = require('../database/user-database'); // Fails (imports itself)
+// const userDatabase = require('../database/user-database'); // Fails (model imports itself)
 // const { listDatabase } = require('../database'); // Also Fails
 
 class User {
-  constructor(name, userName, email, password, id = uuid.v4(),
+  constructor(id = uuid.v4(), name, userName, email, password,
     queue = [],
     ownedLists = [],
     addedSongs = [],
@@ -20,11 +20,11 @@ class User {
     attendedBroadcast = null,
     createdAt = new Date(),
     deletedAt = null) {
+    this.id = id;
     this.name = name;
     this.userName = userName;
     this.email = email;
     this.password = password;
-    this.id = id;
     this.queue = queue;
     this.ownedLists = ownedLists;
     this.addedSongs = addedSongs;
@@ -119,6 +119,7 @@ class User {
     const bc = new Broadcast(userId, name, isActive, isPublic, queue);
     this.broadcast = bc;
     this.startBroadcasting(bc);
+    return bc;
   }
 
   startBroadcasting(broadcast) {
@@ -141,11 +142,11 @@ class User {
   }
 
   static create({
+    id,
     name,
     userName,
     email,
     password,
-    id,
     queue,
     ownedLists,
     addedSongs,
@@ -161,11 +162,11 @@ class User {
     deletedAt,
   }) {
     return new User(
+      id,
       name,
       userName,
       email,
       password,
-      id,
       queue,
       ownedLists,
       addedSongs,

@@ -1,0 +1,76 @@
+[[
+  "1",
+  "2"
+],{
+  "id": "3",
+  "name": "4",
+  "userName": "5",
+  "email": "6",
+  "password": "7",
+  "queue": "8",
+  "ownedLists": "9",
+  "addedSongs": "10",
+  "savedSongs": "11",
+  "savedLists": "12",
+  "favoriteSongs": "13",
+  "favoriteLists": "14",
+  "followers": "15",
+  "following": "16",
+  "broadcast": "17",
+  "attendedBroadcast": "17",
+  "createdAt": "18",
+  "deletedAt": null
+},{
+  "id": "19",
+  "name": "20",
+  "userName": "21",
+  "email": "22",
+  "password": "7",
+  "queue": "23",
+  "ownedLists": "24",
+  "addedSongs": "25",
+  "savedSongs": "26",
+  "savedLists": "27",
+  "favoriteSongs": "28",
+  "favoriteLists": "29",
+  "followers": "30",
+  "following": "31",
+  "broadcast": null,
+  "attendedBroadcast": null,
+  "createdAt": "18",
+  "deletedAt": null
+},"14159a42-62c8-4c09-a781-87a914f55fe6","ali","krcalcn","test@test.com","1234",[],[
+  "32"
+],[
+  "33"
+],[
+  "33"
+],[
+  "32",
+  "32"
+],[
+  "33",
+  "34"
+],[
+  "32"
+],[
+  "19"
+],[],{
+  "streamerId": "3",
+  "name": "35",
+  "isActive": true,
+  "isPublic": true,
+  "queue": "36",
+  "id": "37",
+  "whoCanJoin": "38",
+  "chatRoom": "39",
+  "createdAt": "40",
+  "deletedAt": null
+},"2020-09-28T20:35:08.754Z","dc222be9-b0a0-48ee-88c6-402c57da1106","can","kullaniciAdi","dummy@dummy.com",[],[],[],[],[],[],[],[],[
+  "3"
+],"67d00da9-5cd0-46ed-aac2-9dd876e1c157","5b18833a-23e4-427c-9cc4-68dcda613f77","7de098c7-58ef-4c77-a0a9-aa62de2b3031","Prog Rock Yayını",[
+  "33",
+  "34"
+],"e3849465-94f0-4a46-a6cf-dab8b14fbe1d",[],{
+  "messages": "41"
+},"2020-09-28T20:35:08.765Z",[]]
