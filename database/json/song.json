@@ -1,0 +1,62 @@
+[[
+  "1",
+  "2",
+  "3"
+],{
+  "name": "4",
+  "duration": 402,
+  "url": "5",
+  "releaseDate": "6",
+  "creatorUserId": "7",
+  "id": "8",
+  "artists": "9",
+  "genres": "10",
+  "recordCompany": null,
+  "listener": 0,
+  "createdAt": "6",
+  "deletedAt": null
+},{
+  "name": "11",
+  "duration": 320,
+  "url": "12",
+  "releaseDate": "6",
+  "creatorUserId": "7",
+  "id": "13",
+  "artists": "14",
+  "genres": "15",
+  "recordCompany": null,
+  "listener": 0,
+  "createdAt": "6",
+  "deletedAt": null
+},{
+  "name": "16",
+  "duration": 110,
+  "url": "17",
+  "releaseDate": "6",
+  "creatorUserId": "7",
+  "id": "18",
+  "artists": "19",
+  "genres": "20",
+  "recordCompany": null,
+  "listener": 0,
+  "createdAt": "6",
+  "deletedAt": null
+},"Poseidon`s Creation","./sarki1.mp3","2020-10-03T10:13:52.209Z","62c5b780-2c02-4da3-9711-16c971bf34c3","40e07b89-fc3a-43e5-aeee-d06c43fdad80",[
+  "21",
+  "22"
+],[
+  "23",
+  "24"
+],"In the Wake of Poseidon","./sarki2.mp3","b7b7d88b-7e09-4d8a-9488-4138201652c7",[
+  "25",
+  "22"
+],[
+  "23",
+  "24"
+],"test","./sarki3.mp3","aac39d8e-fde2-46ca-b1ee-43d679185736",[
+  "26",
+  "27"
+],[
+  "28",
+  "29"
+],"d8988994-2806-4184-b4d9-9f445bbd7ced","b9802893-bb68-4900-923a-36ae9bb1cc3e","b5a365be-9ecb-494e-8e6c-c8a29618d2fc","9db619b0-20e0-47b0-b8e3-f5075f32a00b","52469c58-7ced-4e57-8b94-821c88847f5f","artist1","artist2","genre1","genre2"]

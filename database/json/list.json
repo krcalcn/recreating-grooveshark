@@ -1,0 +1,27 @@
+[[
+  "1",
+  "2"
+],{
+  "ownerId": "3",
+  "name": "4",
+  "isPublic": true,
+  "id": "5",
+  "songs": "6",
+  "whoCanSee": "7",
+  "whoCanAdd": "8",
+  "createdAt": "9",
+  "deletedAt": null
+},{
+  "ownerId": "3",
+  "name": "10",
+  "isPublic": true,
+  "id": "11",
+  "songs": "12",
+  "whoCanSee": "13",
+  "whoCanAdd": "14",
+  "createdAt": "9",
+  "deletedAt": null
+},"62c5b780-2c02-4da3-9711-16c971bf34c3","Yeni Calma Listem","4c2237fc-74fb-44f9-affb-b35c791d65fe",[
+  "15",
+  "16"
+],[],[],"2020-10-03T10:13:52.216Z","Yeni Calma Listem2","eb714825-1c7a-4a0c-a84f-08311865d37c",[],[],[],"40e07b89-fc3a-43e5-aeee-d06c43fdad80","b7b7d88b-7e09-4d8a-9488-4138201652c7"]

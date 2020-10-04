@@ -23,6 +23,25 @@ class List {
     this.deletedAt = deletedAt;
   }
 
+  // static createList(ownerId, name, isPublic) {
+  //   const newList = new List(ownerId, name, isPublic);
+  //   return newList;
+  // }
+
+  // addToList(requesterId, songs) {
+  //   songs.forEach((e) => {
+  //     if (this.ownerId === requesterId || this.whoCanAdd.includes(requesterId)) {
+  //       this.songs.push(e);
+  //     } else {
+  //       throw new Error(`You don't have permission to add songs to ${this.name} list`);
+  //     }
+  //   });
+  // }
+
+  // deleteList() {
+  //   this.deletedAt = new Date();
+  // }
+
   static create({
     ownerId, name, isPublic, id, songs, whoCanSee, whoCanAdd, createdAt, deletedAt,
   }) {

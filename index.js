@@ -1,8 +1,6 @@
 const Album = require('./models/album');
 const Artist = require('./models/artist');
-const Broadcast = require('./models/broadcast');
 const Genre = require('./models/genre');
-const List = require('./models/list');
 const Song = require('./models/song');
 const User = require('./models/user');
 const db = require('./database');
@@ -16,8 +14,6 @@ const kingCrimson = new Artist('King Crimson');
 const pitbull = new Artist('Pitbull');
 const rock = new Genre('rock');
 const progressiveRock = new Genre('progressive rock');
-db.artistDatabase.save([eloy, kingCrimson, pitbull]);
-db.genreDatabase.save([rock, progressiveRock]);
 user2.followUser(user);
 
 const song1 = new Song(
@@ -51,40 +47,48 @@ const song3 = new Song(
   ['genre1', 'genre2'],
 );
 
-db.songDatabase.save([song1, song2]);
-db.songDatabase.insert(song3);
-// console.log(db.songDatabase.load());
-const songs = db.songDatabase.load();
+async function main() {
+  try {
+    await db.artistDatabase.save([eloy, kingCrimson, pitbull]);
+    await db.genreDatabase.save([rock, progressiveRock]);
 
-const ocean = new Album('Ocean', [songs[0].id], new Date());
-const inTheWakeOfPoseidon = new Album('In the Wake of Poseidon', [songs[1].id], new Date());
-db.albumDatabase.save([ocean, inTheWakeOfPoseidon]);
+    await db.songDatabase.save([song1, song2]);
+    await db.songDatabase.insert(song3);
+    const songs = await db.songDatabase.load();
 
-// const t = db.albumDatabase.load();
-// console.log(t[0].songs);
-// console.log(db.albumDatabase.load());
+    const ocean = new Album('Ocean', [songs[0].id], new Date());
+    const inTheWakeOfPoseidon = new Album('In the Wake of Poseidon', [songs[1].id], new Date());
+    await db.albumDatabase.save([ocean, inTheWakeOfPoseidon]);
 
-user.addSong(songs[0].id);
+    user.addSong(songs[0].id);
+    user.addSong(songs[1].id);
+    user2.addSong(songs[2].id);
 
-// console.log(songs.map((e) => e.id));
+    user.addToFavoriteSongs([songs[0].id, songs[1].id]);
+    const newList = user.createList(user.id, 'Yeni Calma Listem', true);
+    const newList2 = user.createList(user.id, 'Yeni Calma Listem2', true);
+    await db.listDatabase.save([newList]);
+    await db.listDatabase.insert([newList2]);
+    user.addToFavoriteLists(newList.id);
+    const songAddedNewList = await user.addToList(user.id, newList.id, [song1.id, song2.id]);
+    await db.listDatabase.update(songAddedNewList);
 
-user.addToFavoriteSongs([songs[0].id, songs[1].id]);
-const newList = user.createList(user.id, 'Yeni Calma Listem', true);
-user.saveList(newList.id);
-user.addToFavoriteLists(newList.id);
-db.listDatabase.save([newList]);
+    await db.broadcastDatabase.save([user.createBroadcast(user.id, 'Prog Rock Yayını', false, true, [songs[0].id, songs[1].id])]);
+    await db.userDatabase.save([user, user2]);
 
-user.addToList(newList.id, user.savedSongs.map((i) => i));
-db.broadcastDatabase.save(user.createBroadcast(user.id, 'Prog Rock Yayını', false, true, [songs[0].id, songs[1].id]));
-
-db.userDatabase.save([user, user2]);
-const foundById = db.listDatabase.findById(newList.id);
-db.listDatabase.save(foundById);
+    // const foundById = await db.listDatabase.findBy('id', newList.id);
+    // await db.listDatabase.save([foundById]);
+    const dbLoad = await db.listDatabase.load();
+    console.log(dbLoad);
+  } catch (e) {
+    return console.log(e);
+  }
+}
+main();
 
 /**
  * TODO:
  * - Function removeFromQueue()
- * - Function deletePlaylist()
  * - File Uploading
  * - Audio Streaming
  * - Broadcast Sync Streaming

@@ -39,38 +39,45 @@
   "attendedBroadcast": null,
   "createdAt": "18",
   "deletedAt": null
-},"14159a42-62c8-4c09-a781-87a914f55fe6","ali","krcalcn","test@test.com","1234",[],[
-  "32"
-],[
+},"62c5b780-2c02-4da3-9711-16c971bf34c3","ali","krcalcn","test@test.com","1234",[
+  "32",
   "33"
 ],[
+  "34",
+  "35"
+],[
+  "32",
   "33"
 ],[
   "32",
-  "32"
+  "33"
 ],[
-  "33",
+  "34",
+  "35"
+],[
+  "32",
+  "33"
+],[
   "34"
-],[
-  "32"
 ],[
   "19"
 ],[],{
   "streamerId": "3",
-  "name": "35",
+  "name": "36",
   "isActive": true,
   "isPublic": true,
-  "queue": "36",
+  "queue": "8",
   "id": "37",
   "whoCanJoin": "38",
   "chatRoom": "39",
   "createdAt": "40",
   "deletedAt": null
-},"2020-09-28T20:35:08.754Z","dc222be9-b0a0-48ee-88c6-402c57da1106","can","kullaniciAdi","dummy@dummy.com",[],[],[],[],[],[],[],[],[
+},"2020-10-03T10:13:52.209Z","629335c2-812a-447f-bb11-5be130d398bc","can","kullaniciAdi","dummy@dummy.com",[],[],[
+  "41"
+],[
+  "41"
+],[],[],[],[],[
   "3"
-],"67d00da9-5cd0-46ed-aac2-9dd876e1c157","5b18833a-23e4-427c-9cc4-68dcda613f77","7de098c7-58ef-4c77-a0a9-aa62de2b3031","Prog Rock Yayını",[
-  "33",
-  "34"
-],"e3849465-94f0-4a46-a6cf-dab8b14fbe1d",[],{
-  "messages": "41"
-},"2020-09-28T20:35:08.765Z",[]]
+],"40e07b89-fc3a-43e5-aeee-d06c43fdad80","b7b7d88b-7e09-4d8a-9488-4138201652c7","4c2237fc-74fb-44f9-affb-b35c791d65fe","eb714825-1c7a-4a0c-a84f-08311865d37c","Prog Rock Yayını","71b74dc9-11df-49a3-97b8-ac5644fbd440",[],{
+  "messages": "42"
+},"2020-10-03T10:13:52.218Z","aac39d8e-fde2-46ca-b1ee-43d679185736",[]]

@@ -6,7 +6,12 @@ const listDatabase = require('../database/list-database');
 // const { listDatabase } = require('../database'); // Also Fails
 
 class User {
-  constructor(id = uuid.v4(), name, userName, email, password,
+  constructor(
+    id = uuid.v4(),
+    name,
+    userName,
+    email,
+    password,
     queue = [],
     ownedLists = [],
     addedSongs = [],
@@ -19,7 +24,8 @@ class User {
     broadcast = null,
     attendedBroadcast = null,
     createdAt = new Date(),
-    deletedAt = null) {
+    deletedAt = null,
+  ) {
     this.id = id;
     this.name = name;
     this.userName = userName;
@@ -40,29 +46,6 @@ class User {
     this.deletedAt = deletedAt;
   }
 
-  createList(ownerId, name, isPublic) {
-    const newList = new List(ownerId, name, isPublic);
-    this.ownedLists.push(newList.id);
-    this.savedLists.push(newList.id);
-    listDatabase.save([newList]);
-    // userDatabase.save([this]); // Fails
-    return newList;
-  }
-
-  addToList(listId, songs) {
-    songs.forEach((e) => {
-      const list = listDatabase.findById(listId);
-      if (list.ownerId === this.id) {
-        list.songs.push(e);
-      }
-      listDatabase.update(list);
-    });
-  }
-
-  deleteList(listId) {
-    this.deletedAt = new Date();
-  }
-
   addSong(songs) {
     // TODO: get song file
 
@@ -78,7 +61,7 @@ class User {
   }
 
   deletesong(songId) {
-    // select song by id if owner id equals this.id delete
+    // TODO: select song by id if ownerId equals this.id, delete the song
     return this.addedSongs;
   }
 
@@ -115,6 +98,25 @@ class User {
     return this.queue.push(song);
   }
 
+  createList(ownerId, name, isPublic) {
+    const newList = new List(ownerId, name, isPublic);
+    this.ownedLists.push(newList.id);
+    this.savedLists.push(newList.id);
+    return newList;
+  }
+
+  async addToList(requesterId, listId, songs) {
+    const list = await listDatabase.findBy('id', listId);
+    if (list.ownerId === requesterId || list.whoCanAdd.includes(requesterId)) {
+      songs.forEach((e) => {
+        list.songs.push(e);
+      });
+    } else {
+      throw new Error(`You don't have permission to add songs to ${this.name} list`);
+    }
+    return list;
+  }
+
   createBroadcast(userId, name, isActive, isPublic, queue) {
     const bc = new Broadcast(userId, name, isActive, isPublic, queue);
     this.broadcast = bc;
@@ -125,7 +127,12 @@ class User {
   startBroadcasting(broadcast) {
     broadcast.isActive = true;
     this.broadcast = broadcast;
+    this.attendToBroadcast(broadcast);
+  }
+
+  attendToBroadcast(broadcast) {
     this.attendedBroadcast = broadcast;
+    this.queue = broadcast.queue;
   }
 
   joinBroadCast(broadcast) {
