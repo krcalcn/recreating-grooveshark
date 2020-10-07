@@ -1,0 +1,9 @@
+extends layout
+block content
+  h2 We have #{lists.length} Lists
+  ol
+    each list in lists
+      li
+        a(href=`/lists/${list.id}`) #{list.name || 'liste'}
+        p #{list.id} #{list.isPublic}
+        

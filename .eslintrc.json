@@ -15,7 +15,7 @@
       "no-unused-vars": "off",
       "no-console": "off",
       "eqeqeq": "off",
-      "no-param-reassign": ["error", { "props": false }],
+      "no-param-reassign": "off",
       "consistent-return": "off"
     }
 }

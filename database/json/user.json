@@ -14,70 +14,66 @@
   "savedLists": "12",
   "favoriteSongs": "13",
   "favoriteLists": "14",
-  "followers": "15",
-  "following": "16",
-  "broadcast": "17",
-  "attendedBroadcast": "17",
-  "createdAt": "18",
+  "following": "15",
+  "broadcast": "16",
+  "attendedBroadcast": "16",
+  "createdAt": "17",
   "deletedAt": null
 },{
-  "id": "19",
-  "name": "20",
-  "userName": "21",
-  "email": "22",
+  "id": "18",
+  "name": "19",
+  "userName": "20",
+  "email": "21",
   "password": "7",
-  "queue": "23",
-  "ownedLists": "24",
-  "addedSongs": "25",
-  "savedSongs": "26",
-  "savedLists": "27",
-  "favoriteSongs": "28",
-  "favoriteLists": "29",
-  "followers": "30",
-  "following": "31",
+  "queue": "22",
+  "ownedLists": "23",
+  "addedSongs": "24",
+  "savedSongs": "25",
+  "savedLists": "26",
+  "favoriteSongs": "27",
+  "favoriteLists": "28",
+  "following": "29",
   "broadcast": null,
   "attendedBroadcast": null,
-  "createdAt": "18",
+  "createdAt": "17",
   "deletedAt": null
-},"62c5b780-2c02-4da3-9711-16c971bf34c3","ali","krcalcn","test@test.com","1234",[
-  "32",
-  "33"
-],[
-  "34",
-  "35"
+},"2c7971c8-767d-47ad-8a0f-a366fc186f72","ali","krcalcn","test@test.com","1234",[
+  "30",
+  "31"
 ],[
   "32",
   "33"
 ],[
+  "30",
+  "31"
+],[
+  "30",
+  "31"
+],[
   "32",
   "33"
 ],[
-  "34",
-  "35"
+  "30",
+  "31"
 ],[
-  "32",
-  "33"
-],[
-  "34"
-],[
-  "19"
+  "32"
 ],[],{
   "streamerId": "3",
-  "name": "36",
+  "name": "34",
   "isActive": true,
   "isPublic": true,
   "queue": "8",
-  "id": "37",
-  "whoCanJoin": "38",
-  "chatRoom": "39",
-  "createdAt": "40",
+  "id": "35",
+  "whoCanJoin": "36",
+  "chatRoom": "37",
+  "createdAt": "38",
   "deletedAt": null
-},"2020-10-03T10:13:52.209Z","629335c2-812a-447f-bb11-5be130d398bc","can","kullaniciAdi","dummy@dummy.com",[],[],[
-  "41"
+},"2020-10-06T14:39:41.683Z","e32b0a61-b3b1-4a4b-93e1-843b2399a387","can","kullaniciAdi","dummy@dummy.com",[],[],[
+  "39"
 ],[
-  "41"
-],[],[],[],[],[
+  "39"
+],[],[],[],[
   "3"
-],"40e07b89-fc3a-43e5-aeee-d06c43fdad80","b7b7d88b-7e09-4d8a-9488-4138201652c7","4c2237fc-74fb-44f9-affb-b35c791d65fe","eb714825-1c7a-4a0c-a84f-08311865d37c","Prog Rock Yayını","71b74dc9-11df-49a3-97b8-ac5644fbd440",[],{
-  "messages": "42"
-},"2020-10-03T10:13:52.218Z","aac39d8e-fde2-46ca-b1ee-43d679185736",[]]
+],"59934202-c332-4c57-a335-bca2d1528b84","dd93ba42-f68e-4796-945c-1aa01c7be221","61796f57-58dc-40ca-bea3-ff73a6a69238","694f1f3f-c1d0-46dd-b2ad-55dba4b5f3cd","Prog Rock Yayını","19eb72ee-b80f-4952-b652-8b11ea48ee95",[],{
+  "messages": "40"
+},"2020-10-06T14:39:41.705Z","224b23d0-da70-4c18-82af-caeb4f8cda0e",[]]

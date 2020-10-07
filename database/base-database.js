@@ -29,7 +29,12 @@ class BaseDatabase {
 
   async insert(object) {
     const objects = await this.load();
-    return this.save(objects.concat(object));
+    if (object instanceof this.model) {
+      object = this.model.create(object);
+    }
+    await this.save(objects.concat(object));
+
+    return object;
   }
 
   async remove(index) {
@@ -37,6 +42,16 @@ class BaseDatabase {
 
     objects.splice(index, 1);
     await this.save(this.filename, objects);
+  }
+
+  async removeBy(property, value) {
+    const objects = await this.load();
+
+    const index = objects.findIndex((o) => o[property] == value);
+    if (index == -1) throw new Error(`${this.model.name} instance with  ${property}: ${value} doesn't exist!`);
+
+    objects.splice(index, 1);
+    await this.save(objects);
   }
 
   async update(object) {
@@ -51,6 +66,11 @@ class BaseDatabase {
 
   async findBy(property, value) {
     return (await this.load()).find((o) => o[property] == value);
+  }
+
+  async find(id) {
+    const objects = await this.load();
+    return objects.find((o) => o.id == id);
   }
 }
 

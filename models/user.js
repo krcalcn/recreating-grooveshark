@@ -2,8 +2,6 @@ const uuid = require('uuid');
 const Broadcast = require('./broadcast');
 const List = require('./list');
 const listDatabase = require('../database/list-database');
-// const userDatabase = require('../database/user-database'); // Fails (model imports itself)
-// const { listDatabase } = require('../database'); // Also Fails
 
 class User {
   constructor(
@@ -19,7 +17,6 @@ class User {
     savedLists = [],
     favoriteSongs = [],
     favoriteLists = [],
-    followers = [],
     following = [],
     broadcast = null,
     attendedBroadcast = null,
@@ -38,7 +35,6 @@ class User {
     this.savedLists = savedLists;
     this.favoriteSongs = favoriteSongs;
     this.favoriteLists = favoriteLists;
-    this.followers = followers;
     this.following = following;
     this.broadcast = broadcast;
     this.attendedBroadcast = attendedBroadcast;
@@ -98,16 +94,16 @@ class User {
     return this.queue.push(song);
   }
 
-  createList(ownerId, name, isPublic) {
-    const newList = new List(ownerId, name, isPublic);
+  createList(name, isPublic) {
+    const newList = new List(this.id, name, isPublic);
     this.ownedLists.push(newList.id);
     this.savedLists.push(newList.id);
     return newList;
   }
 
-  async addToList(requesterId, listId, songs) {
+  async addToList(listId, songs) {
     const list = await listDatabase.findBy('id', listId);
-    if (list.ownerId === requesterId || list.whoCanAdd.includes(requesterId)) {
+    if (list.ownerId == this.id || list.whoCanAdd.includes(this.id)) {
       songs.forEach((e) => {
         list.songs.push(e);
       });
@@ -117,8 +113,8 @@ class User {
     return list;
   }
 
-  createBroadcast(userId, name, isActive, isPublic, queue) {
-    const bc = new Broadcast(userId, name, isActive, isPublic, queue);
+  createBroadcast(name, isActive, isPublic, queue) {
+    const bc = new Broadcast(this.id, name, isActive, isPublic, queue);
     this.broadcast = bc;
     this.startBroadcasting(bc);
     return bc;
@@ -141,7 +137,6 @@ class User {
 
   followUser(following) {
     this.following.push(following.id);
-    following.followers.push(this.id);
   }
 
   freezeUser() {
@@ -161,7 +156,6 @@ class User {
     savedLists,
     favoriteSongs,
     favoriteLists,
-    followers,
     following,
     broadcast,
     attendedBroadcast,
@@ -181,7 +175,6 @@ class User {
       savedLists,
       favoriteSongs,
       favoriteLists,
-      followers,
       following,
       broadcast,
       attendedBroadcast,
