@@ -1,14 +1,9 @@
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-class Genre {
-  constructor(name, id = uuid.v4()) {
-    this.name = name;
-    this.id = id;
-  }
+const GenreSchema = new mongoose.Schema({
+  name: String,
+});
 
-  static create({ name, id }) {
-    return new Genre(name, id);
-  }
-}
+GenreSchema.plugin(require('mongoose-autopopulate'));
 
-module.exports = Genre;
+module.exports = mongoose.model('Genre', GenreSchema);

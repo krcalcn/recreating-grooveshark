@@ -1,187 +1,102 @@
-const uuid = require('uuid');
-const Broadcast = require('./broadcast');
-const List = require('./list');
-const listDatabase = require('../database/list-database');
+const mongoose = require('mongoose');
 
-class User {
-  constructor(
-    id = uuid.v4(),
-    name,
-    userName,
-    email,
-    password,
-    queue = [],
-    ownedLists = [],
-    addedSongs = [],
-    savedSongs = [],
-    savedLists = [],
-    favoriteSongs = [],
-    favoriteLists = [],
-    following = [],
-    broadcast = null,
-    attendedBroadcast = null,
-    createdAt = new Date(),
-    deletedAt = null,
-  ) {
-    this.id = id;
-    this.name = name;
-    this.userName = userName;
-    this.email = email;
-    this.password = password;
-    this.queue = queue;
-    this.ownedLists = ownedLists;
-    this.addedSongs = addedSongs;
-    this.savedSongs = savedSongs;
-    this.savedLists = savedLists;
-    this.favoriteSongs = favoriteSongs;
-    this.favoriteLists = favoriteLists;
-    this.following = following;
-    this.broadcast = broadcast;
-    this.attendedBroadcast = attendedBroadcast;
-    this.createdAt = createdAt;
-    this.deletedAt = deletedAt;
-  }
+const UserSchema = new mongoose.Schema({
+  name: String,
+  userName: { type: String, unique: true, required: true },
+  email: { type: String, unique: true, required: true },
+  password: String,
+  queue: [],
+  addedSongs: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Song',
+    autopopulate: { maxDepth: 1 },
+  }],
+  savedSongs: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Song',
+    autopopulate: { maxDepth: 1 },
+  }],
+  savedLists: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'List',
+    autopopulate: { maxDepth: 1 },
+  }],
+  favoriteSongs: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Song',
+    autopopulate: { maxDepth: 1 },
+  }],
+  favoriteLists: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'List',
+    autopopulate: { maxDepth: 1 },
+  }],
+  following: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'User',
+    autopopulate: { maxDepth: 1 },
+  }],
+  broadcast: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Broadcast',
+    autopopulate: { maxDepth: 1 },
+    default: null,
+  },
+  attendedBroadcast: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Broadcast',
+    autopopulate: { maxDepth: 1 },
+    default: null,
+  },
+}, { timestamps: true });
 
-  addSong(songs) {
-    // TODO: get song file
+UserSchema.plugin(require('mongoose-autopopulate'));
 
-    if (Array.isArray(songs)) {
-      songs.forEach((e) => {
-        this.saveSongs([e]);
-        this.addedSongs.push(e);
-      });
-    } else {
-      this.saveSongs(songs);
-      this.addedSongs.push(songs);
-    }
-  }
+module.exports = mongoose.model('User', UserSchema);
 
-  deletesong(songId) {
-    // TODO: select song by id if ownerId equals this.id, delete the song
-    return this.addedSongs;
-  }
+// class User {
+//   constructor(
+//     id = uuid.v4(),
+//     name,
+//     userName,
+//     email,
+//     password,
+//     queue = [],
+//     ownedLists = [],
+//     addedSongs = [],
+//     savedSongs = [],
+//     savedLists = [],
+//     favoriteSongs = [],
+//     favoriteLists = [],
+//     following = [],
+//     broadcast = null,
+//     attendedBroadcast = null,
+//     createdAt = new Date(),
+//     deletedAt = null,
+//   )
 
-  saveSongs(songs) {
-    if (Array.isArray(songs)) {
-      songs.forEach((e) => {
-        this.savedSongs.push(e);
-      });
-      return this.savedSongs;
-    }
-    this.savedSongs.push(songs);
-    return this.savedSongs;
-  }
+//   createBroadcast(name, isActive, isPublic, queue) {
+//     const bc = new Broadcast(this.id, name, isActive, isPublic, queue);
+//     this.broadcast = bc;
+//     this.startBroadcasting(bc);
+//     return bc;
+//   }
 
-  addToFavoriteSongs(songs) {
-    if (Array.isArray(songs)) {
-      songs.forEach((element) => {
-        this.favoriteSongs.push(element);
-      });
-    } else {
-      this.favoriteSongs.push(songs);
-    }
-  }
+//   startBroadcasting(broadcast) {
+//     broadcast.isActive = true;
+//     this.broadcast = broadcast;
+//     this.attendToBroadcast(broadcast);
+//   }
 
-  saveList(list) {
-    return this.savedLists.push(list);
-  }
+//   attendToBroadcast(broadcast) {
+//     this.attendedBroadcast = broadcast;
+//     this.queue = broadcast.queue;
+//   }
 
-  addToFavoriteLists(list) {
-    return this.favoriteLists.push(list);
-  }
+//   joinBroadCast(broadcast) {
+//     this.attendedBroadcast = broadcast.id;
+//   }
 
-  addToQueue(song) {
-    return this.queue.push(song);
-  }
-
-  createList(name, isPublic) {
-    const newList = new List(this.id, name, isPublic);
-    this.ownedLists.push(newList.id);
-    this.savedLists.push(newList.id);
-    return newList;
-  }
-
-  async addToList(listId, songs) {
-    const list = await listDatabase.findBy('id', listId);
-    if (list.ownerId == this.id || list.whoCanAdd.includes(this.id)) {
-      songs.forEach((e) => {
-        list.songs.push(e);
-      });
-    } else {
-      throw new Error(`You don't have permission to add songs to ${this.name} list`);
-    }
-    return list;
-  }
-
-  createBroadcast(name, isActive, isPublic, queue) {
-    const bc = new Broadcast(this.id, name, isActive, isPublic, queue);
-    this.broadcast = bc;
-    this.startBroadcasting(bc);
-    return bc;
-  }
-
-  startBroadcasting(broadcast) {
-    broadcast.isActive = true;
-    this.broadcast = broadcast;
-    this.attendToBroadcast(broadcast);
-  }
-
-  attendToBroadcast(broadcast) {
-    this.attendedBroadcast = broadcast;
-    this.queue = broadcast.queue;
-  }
-
-  joinBroadCast(broadcast) {
-    this.attendedBroadcast = broadcast.id;
-  }
-
-  followUser(following) {
-    this.following.push(following.id);
-  }
-
-  freezeUser() {
-    this.deletedAt = new Date();
-  }
-
-  static create({
-    id,
-    name,
-    userName,
-    email,
-    password,
-    queue,
-    ownedLists,
-    addedSongs,
-    savedSongs,
-    savedLists,
-    favoriteSongs,
-    favoriteLists,
-    following,
-    broadcast,
-    attendedBroadcast,
-    createdAt,
-    deletedAt,
-  }) {
-    return new User(
-      id,
-      name,
-      userName,
-      email,
-      password,
-      queue,
-      ownedLists,
-      addedSongs,
-      savedSongs,
-      savedLists,
-      favoriteSongs,
-      favoriteLists,
-      following,
-      broadcast,
-      attendedBroadcast,
-      createdAt,
-      deletedAt,
-    );
-  }
-}
-
-module.exports = User;
+//   freezeUser() {
+//     this.deletedAt = new Date();
+//   }

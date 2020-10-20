@@ -4,4 +4,4 @@ block content
   p Saved Lists Ids
     each list in user.savedLists  
       h4
-        a(href=`/lists/${list}`) #{list}
+        a(href=`/lists/${list._id}`) #{list.name}

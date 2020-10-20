@@ -1,23 +1,21 @@
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-class Album {
-  constructor(name, songs, releaseDate, genres = [], recordCompany = null,
-    id = uuid.v4(), createdAt = new Date(), deletedAt = null) {
-    this.name = name;
-    this.songs = songs;
-    this.releaseDate = releaseDate;
-    this.genres = genres;
-    this.recordCompany = recordCompany;
-    this.id = id;
-    this.createdAt = createdAt;
-    this.deletedAt = deletedAt;
-  }
+const AlbumSchema = new mongoose.Schema({
+  name: String,
+  songs: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Song',
+    autopopulate: { maxDepth: 1 },
+  }],
+  genres: [{
+    type: mongoose.Types.ObjectId,
+    ref: 'Genre',
+    autopopulate: { maxDepth: 1 },
+  }],
+  releaseDate: Date,
+  recordCompany: String,
+}, { timestamps: true });
 
-  static create({
-    name, songs, releaseDate, genres, recordCompany, id, createdAt, deletedAt,
-  }) {
-    return new Album(name, songs, releaseDate, genres, recordCompany, id, createdAt, deletedAt);
-  }
-}
+AlbumSchema.plugin(require('mongoose-autopopulate'));
 
-module.exports = Album;
+module.exports = mongoose.model('Album', AlbumSchema);

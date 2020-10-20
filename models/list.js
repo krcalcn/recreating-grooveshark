@@ -1,33 +1,31 @@
-const uuid = require('uuid');
+const mongoose = require('mongoose');
 
-class List {
-  constructor(
-    ownerId,
-    name,
-    isPublic,
-    id = uuid.v4(),
-    songs = [],
-    whoCanSee = [],
-    whoCanAdd = [],
-    createdAt = new Date(),
-    deletedAt = null,
-  ) {
-    this.ownerId = ownerId;
-    this.name = name;
-    this.isPublic = isPublic;
-    this.id = id;
-    this.songs = songs;
-    this.whoCanSee = whoCanSee;
-    this.whoCanAdd = whoCanAdd;
-    this.createdAt = createdAt;
-    this.deletedAt = deletedAt;
-  }
+const ListSchema = new mongoose.Schema({
+  ownerId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: { maxDepth: 1 },
+  },
+  name: String,
+  isPublic: Boolean,
+  songs: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Song',
+    autopopulate: { maxDepth: 1 },
+  }],
+  whoCanSee: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: { maxDepth: 1 },
+  },
+  ],
+  whoCanAdd: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    autopopulate: { maxDepth: 1 },
+  }],
+}, { timestamps: true });
 
-  static create({
-    ownerId, name, isPublic, id, songs, whoCanSee, whoCanAdd, createdAt, deletedAt,
-  }) {
-    return new List(ownerId, name, isPublic, id, songs, whoCanSee, whoCanAdd, createdAt, deletedAt);
-  }
-}
+ListSchema.plugin(require('mongoose-autopopulate'));
 
-module.exports = List;
+module.exports = mongoose.model('List', ListSchema);
