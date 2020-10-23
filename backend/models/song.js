@@ -8,6 +8,7 @@ const SongSchema = new mongoose.Schema({
   },
   trackId: {
     type: mongoose.Types.ObjectId,
+    autopopulate: false,
   },
   name: String,
   duration: Number,
@@ -15,12 +16,12 @@ const SongSchema = new mongoose.Schema({
   artists: [{
     type: mongoose.Types.ObjectId,
     ref: 'Artist',
-    autopopulate: true,
+    autopopulate: { maxDepth: 1 },
   }],
   genres: [{
     type: mongoose.Types.ObjectId,
     ref: 'Genre',
-    autopopulate: true,
+    autopopulate: { maxDepth: 1 },
   }],
   recordCompany: String,
   listener: Number,

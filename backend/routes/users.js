@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const { Readable } = require('stream');
 const db = require('../mongo-connection');
 const { userService, listService } = require('../services');
+const songService = require('../services/song-service');
 
 router.get('/', async (req, res) => {
   const users = await userService.load();
@@ -15,10 +16,12 @@ router.post('/', async (req, res) => {
 
   res.send(user);
 });
-router.get('/track/:trackID', (req, res) => {
+router.get('/track/:trackID', async (req, res) => {
   const trackID = new mongoose.mongo.ObjectID(req.params.trackID);
   res.set('content-type', 'audio/mp3');
   res.set('accept-ranges', 'bytes');
+
+  const song = await songService.findBy('trackId', trackID);
 
   const bucket = new mongoose.mongo.GridFSBucket(db.db, {
     bucketName: 'tracks',
