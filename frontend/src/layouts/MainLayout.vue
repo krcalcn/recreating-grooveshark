@@ -71,10 +71,10 @@
         <q-toolbar-title class="row">
 
           <div
-            class="col-3 player-clickable"
+            class="col-3 player-toggle-area"
             @click="playerToggle = !playerToggle">
           </div>
-          <div class="col-6 row q-mt-sm q-my-md  play">
+          <div class="col-6 row q-mt-sm q-my-md play q-pa-sm" style="border-radius: 1rem;"  >
             <div class="col-2 q-py-sm q-pl-md">
               <q-btn
                 color="primary"
@@ -116,13 +116,37 @@
               <div
                 id="waveform"
                 class="col-12 q-ml-md"
-                @click="isPlaying ? wavesurfer.play() : ''">
+                @click="doYaThing">
                 </div>
             </div>
+
+<!-- QUASAR MEDIA PLAYER TEST -->
+
+            <!-- <q-media-player
+              key="audio"
+              type="audio"
+              :dense="true"
+              :dark="true"
+              background-color="black"
+              :muted="false"
+              :playsinline="false"
+              :loop="false"
+              radius="1rem"
+              :autoplay="false"
+              :show-big-play-button="true"
+              :sources="this.sources"
+              :poster="this.poster"
+              :tracks="this.tracks"
+              class="col-12"
+            >
+            </q-media-player> -->
+
+<!-- QUASAR MEDIA PLAYER TEST -->
+
           </div>
-          <q-space class="player-clickable" @click="playerToggle = !playerToggle"/>
+          <q-space class="player-toggle-area" @click="playerToggle = !playerToggle"/>
           <div
-            class="player-clickable"
+            class="player-toggle-area"
             @click="playerToggle = !playerToggle"></div>
           <q-btn
             :icon="playerToggle ? 'expand_more' : 'expand_less'"
@@ -137,6 +161,7 @@
         leave-active-class="animated slideOutDown">
 
         <q-toolbar v-if="playerToggle" class="bg-grad queue">
+
         </q-toolbar>
 
       </transition>
@@ -179,19 +204,28 @@ export default {
       wavesurfer: null,
       song: null,
       isPlaying: false,
+      // audio: {
+      //   sources: [
+      //     {
+      //       // src: 'http://localhost:3000/users/track/5f8dfcfb30926bb64406a077',
+      //       src: 'https://raw.githubusercontent.com/quasarframework/quasar-ui-qmediaplayer/dev/demo/public/media/Scott_Holmes_-_04_-_Upbeat_Party.mp3',
+      //       type: 'audio/mp3',
+      //     },
+      //   ],
+      // },
+      // sources: [],
+      // tracks: [],
+      // poster: '',
     };
   },
   mounted() {
+    this.fetchSong('5f8dfcfb30926bb64406a08d');
     if (!this.wavesurfer) this.createWaveSurfer();
     axios
-      .get('http://localhost:3000/users/track/5f8dfcfb30926bb64406a077', {
-        headers: {
-          'Access-Control-Allow-Origin': true,
-        },
-      })
+      .get('http://localhost:3000/songs/track/5f8dfcfb30926bb64406a077')
       .then((data) => {
         this.song = data.config.url;
-        console.log(data);
+        // console.log(data);
       });
     window.addEventListener('keyup', (event) => {
       if (event.keyCode == 32) {
@@ -199,21 +233,53 @@ export default {
         this.isPlaying = !this.isPlaying;
       }
     });
-    window.addEventListener('keydown', (event) => {
-      if (event.keyCode == 17) {
-        console.log('ctrl');
-        window.addEventListener('keydown', (e) => {
-          if (e.keyCode == 39) {
-            this.wavesurfer.skipForward(1);
-          }
-          if (e.keyCode == 37) {
-            this.wavesurfer.skipBackward(1);
-          }
-        });
-      }
-    });
+
+    // window.addEventListener('keydown', (event) => {
+    //   if (event.keyCode == 17) {
+    //     console.log('ctrl');
+    //     window.addEventListener('keydown', (e) => {
+    //       if (e.keyCode == 39) {
+    //         this.wavesurfer.skipForward(1);
+    //       }
+    //       if (e.keyCode == 37) {
+    //         this.wavesurfer.skipBackward(1);
+    //       }
+    //     });
+    //   }
+    // });
   },
+  // created() {
+  //   this.setSource();
+  // },
+
+  // watch: {
+  //   videoType(val) {
+  //     this.setSource();
+  //   },
+  // },
   methods: {
+    doYaThing() {
+      this.wavesurfer.play();
+    },
+    fetchSong(songId) {
+      axios.get(`http://localhost:3000/songs/${songId}`)
+        .then((data) => {
+          console.log(data.data);
+        }).catch((e) => {
+          console.log(e);
+        });
+    },
+    // setSource() {
+    //   if (this.videoType) {
+    //     this.sources.splice(0, this.sources.length, ...this.video[this.videoIndex].sources);
+    //     this.tracks.splice(0, this.tracks.length, ...this.video[this.videoIndex].tracks);
+    //     this.poster = this.video[this.videoIndex].poster;
+    //   } else {
+    //     this.sources.splice(0, this.sources.length, ...this.audio.sources);
+    //     this.tracks.splice(0, this.tracks.length);
+    //     this.poster = '';
+    //   }
+    // },
     createWaveSurfer() {
       this.wavesurfer = WaveSurfer.create({
         container: '#waveform',
@@ -230,7 +296,7 @@ export default {
         mediaControls: true,
         responsive: true,
       });
-      this.wavesurfer.load('http://localhost:3000/users/track/5f8dfcfb30926bb64406a077');
+      this.wavesurfer.load('http://localhost:3000/songs/track/5f8dfcfb30926bb64406a077');
       this.wavesurfer.on('ready', () => {
 
       });
@@ -245,7 +311,7 @@ export default {
   .bg-grad {
     background: linear-gradient(to bottom, #202020, #323232)
   }
-  .player-clickable {
+  .player-toggle-area {
     cursor: pointer;
   }
   .bg-grad-btn {

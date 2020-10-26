@@ -1,32 +1,11 @@
 const bcrypt = require('bcrypt');
 const BaseService = require('./base-service');
 const User = require('../models/user');
-const listService = require('./list-service');
-const songService = require('./song-service');
 const artistService = require('./artist-service');
 const genreService = require('./genre-service');
 const broadcastService = require('./broadcast-service');
 
 class UserService extends BaseService {
-  async addSong(userId, id, name, duration, releaseDate, artists, genres, recordCompany) {
-    const user = await this.find(userId);
-    const song = await songService.insert({
-      creatorUserId: userId,
-      trackId: id,
-      name,
-      duration,
-      releaseDate,
-      artists,
-      genres,
-      recordCompany,
-    });
-    user.addedSongs.push(song._id);
-
-    await this.update(userId, user);
-
-    return song;
-  }
-
   async createUser({
     name, userName, email, password,
   }) {
@@ -36,15 +15,7 @@ class UserService extends BaseService {
     const user = await this.insert({
       name, userName, email, password: pass,
     });
-    return this;
-  }
-
-  async deleteSong(userId, songId) {
-    const song = await songService.find(songId);
-    if (song.creatorUserId == userId) {
-      await songService.removeBy('_id', song.id);
-    }
-    return this;
+    return user;
   }
 
   async saveSong(userId, songId) {

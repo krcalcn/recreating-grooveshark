@@ -1,6 +1,3 @@
-const fs = require('fs');
-const flatted = require('flatted');
-
 class BaseService {
   constructor(model) {
     this.model = model;

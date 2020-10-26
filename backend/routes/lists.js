@@ -1,5 +1,4 @@
 const router = require('express').Router();
-const flatted = require('flatted');
 const { listService } = require('../services');
 
 router.get('/', async (req, res) => {
