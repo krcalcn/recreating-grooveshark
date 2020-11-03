@@ -15,10 +15,9 @@ class ListService extends BaseService {
 
   async addToList(userId, listId, songs) {
     const list = await this.find(listId);
-    if (list.ownerId == userId || list.whoCanAdd.includes(userId)) {
+    if (list.ownerId.id == userId || list.whoCanAdd.includes(userId)) {
       list.songs.push(songs);
     }
-    console.log(list);
     await this.update(listId, list);
   }
 }

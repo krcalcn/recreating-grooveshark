@@ -4,7 +4,7 @@ const SongSchema = new mongoose.Schema({
   creatorUserId: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    autopopulate: { maxDepth: 1 },
+    autopopulate: false,
   },
   trackId: {
     type: mongoose.Types.ObjectId,

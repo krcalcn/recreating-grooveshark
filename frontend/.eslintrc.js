@@ -69,6 +69,9 @@ module.exports = {
     'no-underscore-dangle': 'off',
     'no-undef': 'off',
     'no-restricted-globals': 'off',
+    'no-shadow': 'off',
+    'no-plusplus': 'off',
+    'array-callback-return': 'off',
 
 
     // allow debugger during development only

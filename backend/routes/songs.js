@@ -5,8 +5,18 @@ const { Readable } = require('stream');
 const db = require('../mongo-connection');
 const songService = require('../services/song-service');
 
+router.get('/', async (req, res) => {
+  const songs = await songService.load();
+  res.send(songs);
+});
+
 router.get('/:songId', async (req, res) => {
   const song = await songService.find(req.params.songId);
+  res.send(song);
+});
+
+router.get('/artist/:artistId', async (req, res) => {
+  const song = await songService.findBy('artists', req.params.artistId);
   res.send(song);
 });
 
@@ -41,7 +51,7 @@ router.post('/:userId/song', async (req, res) => {
   const upload = multer({
     storage,
     limits: {
-      fields: 9, fileSize: 6000000, files: 9, parts: 9,
+      fields: 9, fileSize: 20000000, files: 9, parts: 9,
     },
   });
 

@@ -1,7 +1,9 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-// import example from './module-example'
+import songs from './store-songs';
+import artists from './store-artists';
+import genres from './store-genres';
 
 Vue.use(Vuex);
 
@@ -17,7 +19,9 @@ Vue.use(Vuex);
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      // example
+      songs,
+      artists,
+      genres,
     },
 
     // enable strict mode (adds overhead!)

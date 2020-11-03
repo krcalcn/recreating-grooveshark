@@ -1,10 +1,10 @@
 const router = require('express').Router();
 const { userService, listService } = require('../services');
 
-router.get('/', async (req, res) => {
-  const users = await userService.load();
-  res.render('users', { users });
-});
+// router.get('/', async (req, res) => {
+//   const users = await userService.load();
+//   res.render('users', { users });
+// });
 
 router.post('/', async (req, res) => {
   const user = await userService.createUser(req.body);
@@ -56,30 +56,11 @@ router.post('/:userId/lists/:listId', async (req, res) => {
   await listService.addToList(userId, listId, songs);
 
   res.send('ok');
-  // res.render('lists', { lists });
 });
 
 router.post('/:userId/saveSong/:songId', async (req, res) => {
   const { userId, songId } = req.params;
   await userService.saveSong(userId, songId);
-  res.send('ok');
-});
-
-router.post('/:userId/artist', async (req, res) => {
-  const { userId } = req.params;
-  const { name } = req.body;
-
-  const list = await userService.createArtist(userId, name);
-
-  res.send('ok');
-});
-
-router.post('/:userId/genre', async (req, res) => {
-  const { userId } = req.params;
-  const { name } = req.body;
-
-  const list = await userService.createGenre(userId, name);
-
   res.send('ok');
 });
 

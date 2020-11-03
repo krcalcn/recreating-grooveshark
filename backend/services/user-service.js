@@ -1,8 +1,6 @@
 const bcrypt = require('bcrypt');
 const BaseService = require('./base-service');
 const User = require('../models/user');
-const artistService = require('./artist-service');
-const genreService = require('./genre-service');
 const broadcastService = require('./broadcast-service');
 
 class UserService extends BaseService {
@@ -46,28 +44,6 @@ class UserService extends BaseService {
     const user = await this.find(userId);
     user.queue.push(songId);
     await this.update(userId, user);
-  }
-
-  async createArtist(userId, name) {
-    const user = await this.find(userId);
-    let artist;
-    if (user) {
-      artist = await artistService.insert({ name });
-    } else {
-      return new Error('Invalid User!');
-    }
-    return artist;
-  }
-
-  async createGenre(userId, name) {
-    const user = await this.find(userId);
-    let genre;
-    if (user) {
-      genre = await genreService.insert({ name });
-    } else {
-      return new Error('Invalid User!');
-    }
-    return genre;
   }
 
   async createBroadcast(userId, name, isActive, isPublic) {
