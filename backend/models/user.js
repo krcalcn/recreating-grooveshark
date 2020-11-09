@@ -2,10 +2,23 @@ const mongoose = require('mongoose');
 
 const UserSchema = new mongoose.Schema({
   name: String,
-  userName: { type: String, unique: true, required: true },
-  email: { type: String, unique: true, required: true },
-  password: String,
-  queue: [],
+  userName: {
+    type: String,
+    required: [true, 'The Username field is required!'],
+    trim: true,
+    unique: 1,
+  },
+  email: {
+    type: String,
+    required: [true, 'The email field is required!'],
+    trim: true,
+    unique: 1,
+  },
+  password: {
+    type: String,
+    required: [true, 'The password field is required!'],
+    minlength: 5,
+  },
   addedSongs: [{
     type: mongoose.Types.ObjectId,
     ref: 'Song',
@@ -53,50 +66,3 @@ const UserSchema = new mongoose.Schema({
 UserSchema.plugin(require('mongoose-autopopulate'));
 
 module.exports = mongoose.model('User', UserSchema);
-
-// class User {
-//   constructor(
-//     id = uuid.v4(),
-//     name,
-//     userName,
-//     email,
-//     password,
-//     queue = [],
-//     ownedLists = [],
-//     addedSongs = [],
-//     savedSongs = [],
-//     savedLists = [],
-//     favoriteSongs = [],
-//     favoriteLists = [],
-//     following = [],
-//     broadcast = null,
-//     attendedBroadcast = null,
-//     createdAt = new Date(),
-//     deletedAt = null,
-//   )
-
-//   createBroadcast(name, isActive, isPublic, queue) {
-//     const bc = new Broadcast(this.id, name, isActive, isPublic, queue);
-//     this.broadcast = bc;
-//     this.startBroadcasting(bc);
-//     return bc;
-//   }
-
-//   startBroadcasting(broadcast) {
-//     broadcast.isActive = true;
-//     this.broadcast = broadcast;
-//     this.attendToBroadcast(broadcast);
-//   }
-
-//   attendToBroadcast(broadcast) {
-//     this.attendedBroadcast = broadcast;
-//     this.queue = broadcast.queue;
-//   }
-
-//   joinBroadCast(broadcast) {
-//     this.attendedBroadcast = broadcast.id;
-//   }
-
-//   freezeUser() {
-//     this.deletedAt = new Date();
-//   }

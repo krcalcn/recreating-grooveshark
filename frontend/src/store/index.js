@@ -4,6 +4,7 @@ import Vuex from 'vuex';
 import songs from './store-songs';
 import artists from './store-artists';
 import genres from './store-genres';
+import auth from './store-auth';
 
 Vue.use(Vuex);
 
@@ -22,6 +23,7 @@ export default function (/* { ssrContext } */) {
       songs,
       artists,
       genres,
+      auth,
     },
 
     // enable strict mode (adds overhead!)

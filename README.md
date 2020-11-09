@@ -26,3 +26,6 @@ quasar dev
 ./frontend
 quasar build
 ```
+
+### Live Demo
+https://frontend-5yguhx2xkq-ew.a.run.app/

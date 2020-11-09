@@ -1,6 +1,6 @@
 <template>
   <q-page class="row">
-    <div class="col-9 q-mx-auto bg-white q-mt-xl q-pa-xl row">
+    <div class="col-9 q-mx-auto bg-white q-mt-xl q-pa-xl row" v-if="user">
       <div class="col-12 text-h4">
         Add Song
       </div>
@@ -127,6 +127,17 @@
           </div>
       </q-form>
       </div>
+      <q-spinner
+        v-if="isLoading"
+        class="absolute-center"
+        color="grey"
+        size="5em"/>
+    </div>
+
+    <div class="col-9 q-mx-auto bg-white q-mt-xl q-pa-xl row" v-else>
+      <div class="col-12 text-h4 q-mt-xl">
+        Please register or login to add songs...
+      </div>
     </div>
   </q-page>
 </template>
@@ -154,10 +165,12 @@ export default {
       dialog: false,
       additionType: 'addArtist',
       dialogInput: null,
+      user: null,
     };
   },
 
   async mounted() {
+    this.user = this.$q.sessionStorage.getItem('user');
     const artists = await this.fetchArtists();
     artists.map((a) => this.artists.push({ label: a.name, value: a._id }));
     this.artistOptions = this.artists;
@@ -170,6 +183,7 @@ export default {
   methods: {
     ...mapActions('artists', ['fetchArtists', 'addArtist']),
     ...mapActions('genres', ['fetchGenres', 'addGenre']),
+    ...mapActions('songs', ['addSong']),
 
     openDialog(type) {
       this.dialog = true;
@@ -235,12 +249,10 @@ export default {
       formData.append('genres', [...this.selectedGenre.map((g) => g.value)]);
       formData.append('recordCompany', this.recordCompany);
 
-      // TODO: Get userId from session
-
-      // POST /songs/:userId/song
-
-      axios.post('http://localhost:3000/songs/5f97c43e315e8b2414412f0e/song', formData)
+      this.isLoading = true;
+      this.addSong(formData)
         .then((data) => {
+          this.isLoading = false;
           this.$q.notify({
             type: 'positive',
             message: `${this.name} Succesfully Added`,

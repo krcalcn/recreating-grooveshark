@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { SessionStorage } from 'quasar';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+require('dotenv').config();
+
+axios.defaults.baseURL = process.env.API_URL || 'https://backend-5yguhx2xkq-ew.a.run.app';
 
 const state = {
   nowPlaying: '',
@@ -44,6 +47,11 @@ const actions = {
   },
   removeFromQueue({ commit }, index) {
     commit('removeFromQueue', index);
+  },
+  async addSong(context, data) {
+    const user = SessionStorage.getItem('user');
+    const request = await axios.post(`songs/${user._id}/song`, data);
+    return request;
   },
   async fetchSongs() {
     const request = await axios.get('/songs');

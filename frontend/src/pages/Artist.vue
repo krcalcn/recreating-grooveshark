@@ -29,18 +29,25 @@ export default {
   data() {
     return {
       isLoading: true,
+      data: null,
       artist: null,
       songs: null,
     };
   },
 
   async mounted() {
-    const data = await this.findArtist({
+    // console.log(this.$route.params);
+    this.data = await this.findArtist({
       _id: this.$router.history.current.params.artistId,
     });
-    this.artist = data.artist;
-    this.songs = data.songs;
+    this.artist = this.data.artist;
+    this.songs = this.data.songs;
     this.isLoading = false;
+  },
+  watch: {
+    'this.$route.params.artistId': () => {
+      // console.log(this.$route.params);
+    },
   },
 
   methods: {

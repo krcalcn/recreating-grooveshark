@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { SessionStorage } from 'quasar';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+require('dotenv').config();
+
+axios.defaults.baseURL = process.env.API_URL || 'https://backend-5yguhx2xkq-ew.a.run.app';
 
 const state = {
   artists: [],
@@ -23,8 +26,8 @@ const actions = {
   },
 
   async addArtist(context, { artist }) {
-    // TODO: UserId From Session
-    const request = await axios.post('/artists/5f97c43e315e8b2414412f0e/artist', {
+    const user = SessionStorage.getItem('user');
+    const request = await axios.post(`/artists/${user._id}/artist`, {
       name: artist,
     });
     return request.data;

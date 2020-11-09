@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const cors = require('cors');
+require('dotenv').config();
 
 const usersRouter = require('./routes/users');
 const listsRouter = require('./routes/lists');
@@ -10,6 +11,7 @@ const artistsRouter = require('./routes/artists');
 const indexRouter = require('./routes');
 require('./mongo-connection');
 
+const port = process.env.PORT || 3000;
 const app = express();
 
 app.use(bodyParser.json());
@@ -24,6 +26,6 @@ app.use('/genres', genresRouter);
 app.use('/artists', artistsRouter);
 app.use('/', indexRouter);
 
-app.listen('3000', () => {
-  console.log('server is running on 3000 port');
+app.listen(port, () => {
+  console.log(`server is running on ${port} port`);
 });

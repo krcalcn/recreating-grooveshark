@@ -9,11 +9,22 @@ class UserService extends BaseService {
   }) {
     const salt = bcrypt.genSaltSync().toString();
     const pass = bcrypt.hashSync(password, salt);
-    // console.log(await bcrypt.compareSync(password, pass));
     const user = await this.insert({
       name, userName, email, password: pass,
     });
     return user;
+  }
+
+  async login(usernameOrMail, password) {
+    const user = await User.findOne({
+      email: usernameOrMail,
+    }) || await User.findOne({
+      userName: usernameOrMail,
+    });
+    if (!user) return false;
+    const result = bcrypt.compareSync(password, user.password);
+    if (result) return user;
+    return false;
   }
 
   async saveSong(userId, songId) {

@@ -1,6 +1,9 @@
 import axios from 'axios';
+import { SessionStorage } from 'quasar';
 
-axios.defaults.baseURL = 'http://localhost:3000';
+require('dotenv').config();
+
+axios.defaults.baseURL = process.env.API_URL || 'https://backend-5yguhx2xkq-ew.a.run.app';
 
 const state = {
   genres: [],
@@ -16,7 +19,8 @@ const actions = {
     return request.data;
   },
   async addGenre(context, { genre }) {
-    const request = await axios.post('/genres/5f97c43e315e8b2414412f0e/genre', {
+    const user = SessionStorage.getItem('user');
+    const request = await axios.post(`/genres/${user._id}/genre`, {
       name: genre,
     });
     return request.data;

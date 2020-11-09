@@ -5,12 +5,10 @@
         color="primary"
         flat
         round
-        icon="fast_rewind"
+        icon="skip_previous"
         size="md"
         @click="() => {
-          wavesurfer.skipBackward(1);
-          wavesurfer.play();
-          isPlaying = true;
+          wavesurfer.stop();
           }"
       />
       <q-btn
@@ -26,14 +24,16 @@
         color="primary"
         flat
         round
-        icon="fast_forward"
+        icon="skip_next"
         size="md"
         @click="() => {
-          wavesurfer.skipForward(1)
+          playNext();
           wavesurfer.play();
           isPlaying = true;
           }"
       />
+      <!-- TODO: Volume Control -->
+      <!-- TODO: Song Duration -->
     </div>
     <div v-if="$q.screen.width < 1440 " class="col-9 text-center">
       <marquee>
@@ -56,8 +56,10 @@
   </div>
 </template>
 <script>
-import { mapState, mapActions } from 'vuex';
 import WaveSurfer from 'wavesurfer.js';
+import { mapState, mapActions } from 'vuex';
+
+const backendUrl = process.env.API_URL || 'https://backend-5yguhx2xkq-ew.a.run.app';
 
 export default {
   props: ['song'],
@@ -71,22 +73,26 @@ export default {
   },
 
   mounted() {
-    window.addEventListener('keyup', (event) => {
-      if (event.keyCode == 32) {
+    window.addEventListener('keydown', (event) => {
+      if (event.keyCode == 32 && event.target == document.body) {
         this.wavesurfer.playPause();
+        event.preventDefault();
       }
     });
-
-    // Ctrl + Right Arrow key combination listener:
-    // Plays next song on the queue
-    // window.addEventListener('keyup', (e) => {
-    //   const evtobj = window.event ? event : e;
-    //   if (evtobj.keyCode == 39 && evtobj.ctrlKey) this.queue.shift();
-    // });
+    window.addEventListener('keyup', (e) => {
+      const evtobj = window.event ? event : e;
+      if (evtobj.keyCode == 39 && evtobj.ctrlKey) {
+        this.playNext();
+        this.wavesurfer.on('ready', () => {
+          this.wavesurfer.play();
+        });
+      }
+    });
   },
   methods: {
     ...mapActions('songs', ['playNext']),
     createWaveSurfer() {
+      this.$emit('loading', true);
       this.wavesurfer = WaveSurfer.create({
         container: '#waveform',
         barWidth: 1,
@@ -108,14 +114,18 @@ export default {
       this.wavesurfer.on('pause', () => {
         this.isPlaying = false;
       });
+      this.wavesurfer.on('ready', () => {
+        this.$emit('loading', false);
+      });
       this.wavesurfer.on('finish', () => {
+        // TODO: song's listener + 1
         this.wavesurfer.empty();
         this.playNext();
         this.wavesurfer.on('ready', () => {
           this.wavesurfer.play();
         });
       });
-      this.wavesurfer.load(`http://localhost:3000/songs/track/${this.song.trackId}`);
+      this.wavesurfer.load(`${backendUrl}/songs/track/${this.song.trackId}`);
     },
   },
   computed: {
@@ -123,9 +133,12 @@ export default {
   },
   watch: {
     song() {
-      this.wavesurfer.empty();
-      if (!this.wavesurfer) this.createWaveSurfer();
-      this.wavesurfer.load(`http://localhost:3000/songs/track/${this.song.trackId}`);
+      if (!this.wavesurfer) {
+        this.createWaveSurfer();
+      } else {
+        this.wavesurfer.empty();
+      }
+      this.wavesurfer.load(`${backendUrl}/songs/track/${this.song.trackId}`);
     },
     queue() {
       setTimeout(() => {

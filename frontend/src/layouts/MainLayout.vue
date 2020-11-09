@@ -16,15 +16,30 @@
         <q-toolbar-title align="right">
         <q-btn text-color="white" label="Add Song" class="q-mr-md bg-content" to="/add/song" />
 
-        <q-btn-dropdown auto-close flat label="User" class="bg-content">
+        <q-btn label="Login/Register" to="/auth" class="bg-content" v-if="user == null"/>
+
+        <q-btn-dropdown
+          auto-close
+          flat
+          :label="user.name"
+          class="bg-content"
+          v-if="user">
           <q-list padding style="width: 250px">
             <q-item clickable>
               <q-item-section avatar>
                 <q-avatar icon="account_circle" size="40px" font-size="40px" text-color="primary" />
               </q-item-section>
               <q-item-section>
-                <q-item-label>Profile</q-item-label>
-                <q-item-label caption>{{ new Date(0) }}</q-item-label>
+                <q-item-label>{{ user.userName }}</q-item-label>
+                <q-item-label caption>{{ user.email }}</q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item clickable @click="logout">
+              <q-item-section avatar>
+                <q-avatar icon="logout" size="40px" font-size="40px" text-color="primary" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label>Logout</q-item-label>
               </q-item-section>
             </q-item>
           </q-list>
@@ -34,19 +49,29 @@
     </q-header>
 
     <q-drawer
-      show-if-above
       v-model="leftDrawerOpen"
+      :breakpoint="1440"
+      :width="250"
       content-class="bg-dark text-white"
     >
-      <q-list>
-        <q-item-label
-          header
-        >
-          Essential Links
-        </q-item-label>
-        <q-item-label>
-          <b>Links</b>
-        </q-item-label>
+    <q-list dark>
+        <q-item-label header>Navigation</q-item-label>
+
+        <q-item
+          v-for="nav in navs"
+          :key="nav.label"
+          :to="nav.to"
+          class="text-grey-4"
+          exact
+          clickable>
+          <q-item-section avatar>
+            <q-icon :name="nav.icon" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>{{ nav.label }}</q-item-label>
+          </q-item-section>
+        </q-item>
+
       </q-list>
     </q-drawer>
 
@@ -88,7 +113,7 @@
             </marquee>
           </div>
 
-          <player v-if="queue" :song="queue[0]" />
+          <player v-if="queue" :song="queue[0]" v-on:loading="loading"/>
 
           <q-space class="player-toggle-area" @click="queueToggle = !queueToggle"/>
           <div
@@ -138,7 +163,6 @@ import { mapActions, mapState } from 'vuex';
 import PlayerVue from '../components/player/Player';
 
 export default {
-  name: 'MainLayout',
   components: {
     player: PlayerVue,
   },
@@ -147,17 +171,38 @@ export default {
       isLoading: true,
       leftDrawerOpen: false,
       queueToggle: true,
+      user: null,
+      navs: [
+        {
+          label: 'Browse',
+          icon: 'music_video',
+          to: '/',
+        },
+        {
+          label: 'Add Song',
+          icon: 'library_add',
+          to: '/add/song',
+        },
+      ],
     };
   },
   computed: {
     ...mapState('songs', ['queue']),
   },
   async mounted() {
-    // await this.addToQueue([...this.songs]); // dummy songs
+    this.user = this.$q.sessionStorage.getItem('user');
     this.isLoading = false;
   },
   methods: {
     ...mapActions('songs', ['addToQueue', 'playFromQueue', 'removeFromQueue']),
+    logout() {
+      this.$q.sessionStorage.remove('user');
+      this.user = '';
+      window.location.reload();
+    },
+    loading(v) {
+      this.isLoading = v;
+    },
   },
 };
 </script>
@@ -184,7 +229,8 @@ export default {
   }
   @media only screen and (max-width: 760px) {
     .queue {
-      overflow: scroll;
+      overflow-x: scroll;
+      overflow-y: hidden;
     }
   }
   .play {

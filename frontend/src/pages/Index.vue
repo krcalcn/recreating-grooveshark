@@ -15,11 +15,14 @@
           flat
           icon="queue"
           @click.stop="addToQueue(song)" />
-        <a
-                :href="`#/artists/${song.artists[0]._id}`"
-                class="artist-link" >
+        <q-btn
+          flat
+          dense
+          :to="`/artists/${song.artists[0]._id}`"
+          class="artist-link"
+          no-caps>
           {{ song.artists[0].name }}
-        </a>
+        </q-btn>
         {{ song.name }}
 
       </div>

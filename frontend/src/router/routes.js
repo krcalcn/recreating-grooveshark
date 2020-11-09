@@ -6,6 +6,7 @@ const routes = [
       { path: '', component: () => import('pages/Index.vue') },
       { path: 'add/song', component: () => import('pages/AddSong.vue') },
       { path: 'artists/:artistId', component: () => import('pages/Artist.vue') },
+      { path: 'auth', component: () => import('pages/Auth.vue') },
     ],
   },
 
