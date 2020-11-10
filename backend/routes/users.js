@@ -1,11 +1,6 @@
 const router = require('express').Router();
 const { userService, listService } = require('../services');
 
-// router.get('/', async (req, res) => {
-//   const users = await userService.load();
-//   res.render('users', { users });
-// });
-
 router.post('/', async (req, res) => {
   const user = await userService.createUser(req.body);
 
@@ -31,20 +26,12 @@ router.post('/login', async (req, res) => {
   res.send(resp);
 });
 
-// router.patch('/:userId', async (req, res) => {
-//   const { userId } = req.params;
-//   const { userName } = req.body;
-
-//   await userService.update(userId, { userName });
-// });
-
 router.post('/:userId/lists', async (req, res) => {
   const { userId } = req.params;
   const { name, isPublic } = req.body;
 
   const list = await listService.createList(userId, name, isPublic);
   res.send('ok');
-  // res.render('lists', { lists });
 });
 
 router.post('/:userId/broadcast', async (req, res) => {

@@ -1,31 +1,48 @@
 # Recreating Grooveshark (A Grooveshark Clone)
 
-## Install the dependencies
+## Live Demo
+https://frontend-5yguhx2xkq-ew.a.run.app/
+
+### Dev Dependencies
+- Npm
+- Quasar Cli
 ```bash
-./backend
+npm install -g @quasar/cli
+```
+- http-server
+```bash
+npm install -g http-server
+```
+
+### Install the dependencies
+```bash
+cd backend
 npm install
 
-./frontend
-npm install -g @quasar/cli
+cd frontend
 npm install
 ```
 
 ### Start the Server
 ```bash
-./backend
+cd backend
 npm run watch
 ```
-### Start the App
+
+### Start the App in Dev Mode
 ```bash
-./frontend
+cd frontend
 quasar dev
 ```
 
 ### Build the App for Production
+- Building
 ```bash
-./frontend
+cd frontend
 quasar build
 ```
-
-### Live Demo
-https://frontend-5yguhx2xkq-ew.a.run.app/
+- Run Frontend App
+```bash
+cd dist/spa
+http-server
+```

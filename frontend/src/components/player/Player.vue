@@ -83,9 +83,6 @@ export default {
       const evtobj = window.event ? event : e;
       if (evtobj.keyCode == 39 && evtobj.ctrlKey) {
         this.playNext();
-        this.wavesurfer.on('ready', () => {
-          this.wavesurfer.play();
-        });
       }
     });
   },
@@ -100,7 +97,7 @@ export default {
         progressColor: '#F07040',
         scrollParent: false,
         barGap: 3,
-        barHeight: 1.5,
+        barHeight: 2,
         cursorColor: '#Ff5020',
         cursorWidth: 2.5,
         height: 40,
@@ -116,14 +113,12 @@ export default {
       });
       this.wavesurfer.on('ready', () => {
         this.$emit('loading', false);
+        this.wavesurfer.play();
       });
       this.wavesurfer.on('finish', () => {
         // TODO: song's listener + 1
         this.wavesurfer.empty();
         this.playNext();
-        this.wavesurfer.on('ready', () => {
-          this.wavesurfer.play();
-        });
       });
       this.wavesurfer.load(`${backendUrl}/songs/track/${this.song.trackId}`);
     },

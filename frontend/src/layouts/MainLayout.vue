@@ -141,7 +141,8 @@
                     flat
                     dense
                     icon="close"
-                    @click.stop="removeFromQueue(key)" />
+                    @click.stop="removeFromQueue(key)"
+                    class="queue-remove"/>
               <div class="col-12">
                 <q-icon :name="key == 0 ? 'volume_up' : 'album'" size="5em"/>
               </div>
@@ -241,9 +242,16 @@ export default {
     height: 90%;
     box-sizing: border-box;
     cursor: pointer;
+    position: relative;
   }
   .queue-item:hover {
     box-shadow: inset 0px 0px 8px #555;
+  }
+  .queue-remove {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    margin: 5px 5px 0px 0px;
   }
   .artist-link {
     color: #D65F0A !important;
