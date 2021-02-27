@@ -89,7 +89,9 @@ export default {
   methods: {
     ...mapActions('songs', ['playNext']),
     createWaveSurfer() {
-      this.$emit('loading', true);
+      if (this.song) {
+        this.$emit('loading', true);
+      }
       this.wavesurfer = WaveSurfer.create({
         container: '#waveform',
         barWidth: 1,
@@ -128,6 +130,9 @@ export default {
   },
   watch: {
     song() {
+      if (this.song) {
+        this.$emit('loading', true);
+      }
       if (!this.wavesurfer) {
         this.createWaveSurfer();
       } else {

@@ -1,0 +1,116 @@
+@startuml grooveshark
+
+
+class User <<Entity>> {
+  + id: String
+  + name: String
+  + userName: String
+  + email: String
+  + password: String
+  + queue: Array
+  + savedSongs: Array
+  + savedLists: Array
+  + favSongs: Array
+  + favLists: Array
+  + createdAt: Date
+  + deletedAt: Date
+
+  + createPlaylist()
+  + deletePlaylist()
+  + addPlaylistToFavs()
+  + savePlaylist()
+  + addToQueue()
+  + removeFromQueue()
+  + saveSong()
+  + addSongToFavs()
+  + startBroadcast()
+  + joinBroadcast()
+  + addSong()
+  + followUser()
+  + freezeUserAccount()
+}
+
+class Follow <<Entity>> {
+  + id: String
+  + follower: String
+  + following: String
+}
+
+class List <<Entity>> {
+  + id: String
+  + ownerId: Number
+  + name: String
+  + songs: Array
+  + isPublic: Boolean
+  + whoCanSee: Array
+  + whoCanAdd: Array
+  + genres: Array
+  + createdAt: Date
+  + deletedAt: Date
+  + addToList()
+}
+
+class Artist <<Entity>> {
+  + id: String
+  + name: String
+  + albums: Array
+  + singles: Array
+  + genres: Array
+  + createdAt: Date
+  + deletedAt: Date
+}
+
+class Album <<Entity>> {
+  + id: String
+  + name: String
+  + songs: Array
+  + releaseDate: Date
+  + recordCompany: String
+  + genres: Array
+  + createdAt: Date
+  + deletedAt: Date
+}
+
+class Song <<Entity>> {
+  + id: String
+  + name: String
+  + duration: Time
+  + url: String
+  + releaseDate: Date
+  + genres: Array
+  + recordCompany: String
+  + artists: Array
+  + whoAdded: String
+  + createdAt: Date
+  + deletedAt: Date
+}
+
+class Broadcast <<Entity>> {
+  + id: String
+  + streamerId: String
+  + name: String
+  + queue: Array
+  + isActive: Boolean
+  + isPublic: Boolean
+  + whoCanJoin: Array
+  + chat: String
+  + createdAt: Date
+  + deletedAt: Date
+}
+
+
+
+class Genre <<ValueObject>> {
+  + id: Integer
+  + name: String
+}
+
+
+Artist "1" *--> "0..*" Album
+Artist "1" *--> "1..*" Song
+User "1" *--> "0..*" List
+User "1" *--> "0..*" Broadcast
+
+Album o--> Song
+
+@enduml

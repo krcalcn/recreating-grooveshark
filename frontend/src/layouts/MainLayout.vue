@@ -76,12 +76,7 @@
     </q-drawer>
 
     <q-page-container>
-      <router-view class="bg-content"/>
-      <q-spinner
-        v-if="isLoading"
-        class="absolute-center"
-        color="grey"
-        size="5em"/>
+      <router-view class="bg-content" v-on:userLogined="userLogin"/>
     </q-page-container>
 
     <q-footer
@@ -194,15 +189,30 @@ export default {
     this.user = this.$q.sessionStorage.getItem('user');
     this.isLoading = false;
   },
+  watch: {
+    isLoading() {
+      if (this.isLoading) {
+        this.$q.loading.show({
+          delay: 400, // ms
+        });
+      } else {
+        this.$q.loading.hide();
+      }
+    },
+  },
   methods: {
     ...mapActions('songs', ['addToQueue', 'playFromQueue', 'removeFromQueue']),
     logout() {
       this.$q.sessionStorage.remove('user');
-      this.user = '';
-      window.location.reload();
+      this.user = null;
     },
     loading(v) {
       this.isLoading = v;
+    },
+    userLogin(val) {
+      if (val) {
+        this.user = this.$q.sessionStorage.getItem('user');
+      }
     },
   },
 };

@@ -53,8 +53,8 @@ router.post('/:userId/lists/:listId', async (req, res) => {
 
 router.post('/:userId/saveSong/:songId', async (req, res) => {
   const { userId, songId } = req.params;
-  await userService.saveSong(userId, songId);
-  res.send('ok');
+  const user = await userService.saveSong(userId, songId);
+  res.send(user);
 });
 
 module.exports = router;

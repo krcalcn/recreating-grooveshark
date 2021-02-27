@@ -11,11 +11,11 @@
 
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel name="login">
-        <login-register :tab="tab" />
+        <login-register :tab="tab" v-on:login="loginAction"/>
       </q-tab-panel>
 
       <q-tab-panel name="register">
-        <login-register :tab="tab" />
+        <login-register :tab="tab" v-on:login="loginAction"/>
       </q-tab-panel>
 
     </q-tab-panels>
@@ -38,7 +38,12 @@ export default {
       this.$router.push('/');
     }
   },
-  watch: {
+  methods: {
+    loginAction(loginState) {
+      if (loginState) {
+        this.$emit('userLogined', true);
+      }
+    },
   },
   components: {
     'login-register': LoginRegisterVue,

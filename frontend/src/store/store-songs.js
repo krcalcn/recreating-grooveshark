@@ -53,6 +53,18 @@ const actions = {
     const request = await axios.post(`songs/${user._id}/song`, data);
     return request;
   },
+  async addSongToLibrary(context, song) {
+    const user = SessionStorage.getItem('user');
+    const request = await axios.post(`users/${user._id}/saveSong/${song._id}`);
+    try {
+      SessionStorage.set('user', {});
+    } catch (error) {
+      console.log(error);
+    }
+    console.log(SessionStorage.set('user', user));
+    console.log(SessionStorage.getItem('user'));
+    return request;
+  },
   async fetchSongs() {
     const request = await axios.get('/songs');
     return request.data;

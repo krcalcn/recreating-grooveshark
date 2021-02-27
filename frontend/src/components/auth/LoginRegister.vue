@@ -113,7 +113,8 @@ export default {
             });
             this.$q.sessionStorage.set('user', user);
             setTimeout(() => {
-              window.location.reload();
+              this.$router.push('/');
+              this.$emit('login', true);
             }, 1000);
           } else {
             this.$q.notify({
@@ -146,7 +147,8 @@ export default {
             });
             this.$q.sessionStorage.set('user', user);
             setTimeout(() => {
-              window.location.reload();
+              this.$router.push('/');
+              this.$emit('login', true);
             }, 1000);
           } else {
             this.$q.notify({

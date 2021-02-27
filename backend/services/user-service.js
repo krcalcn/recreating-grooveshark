@@ -31,6 +31,7 @@ class UserService extends BaseService {
     const user = await this.find(userId);
     user.savedSongs.push(songId);
     await this.update(userId, user);
+    return user;
   }
 
   async addToFavoriteSongs(userId, songId) {
